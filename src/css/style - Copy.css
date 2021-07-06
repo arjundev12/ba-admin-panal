@@ -1,0 +1,597 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Open Sans', sans-serif !important;
+	font-size: 13px;
+	color: #3a3a3a;
+	font-weight: 400;
+	overflow-x: hidden;
+}
+* {
+	margin: 0px;
+	padding: 0px;
+}
+.clearfix {
+ *zoom: 1;
+}
+
+a.btn.btn-primary.back {
+    margin-bottom: 10px;
+}
+.clearfix:before, .clearfix:after {
+	display: table;
+	content: "";
+	line-height: 0;
+}
+.clearfix:after {
+	clear: both;
+}
+.clr, .clear {
+	clear: both;
+}
+header, footer, aside, article, section, detail, nav, figure {
+	position: relative;
+}
+h1, h2, h3, h4, h5, h6, p {
+	margin: 0;
+	padding: 0;
+}
+ul, li, ol {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+a {
+	text-decoration: none;
+	outline: none;
+}
+a:hover, a:focus {
+	text-decoration: none !important;
+	outline: none;
+}
+img {
+	border: 0;
+	outline: none;
+	max-width: 100%;
+}
+input[type="text"], input[type="password"], select, textarea, input[type="button"] {
+	max-width: 100%;
+}
+.searchBox{
+	max-width: 20%;
+}
+table {
+	width: 100%;
+}
+p {
+	margin: 0;
+	padding: 0;
+}
+.fltL {
+	float: left;
+}
+.fltR {
+	float: right;
+}
+.padding_none {
+	padding: 0 !important;
+}
+.border_none {
+	border: none !important
+}
+.navbar-toggle {
+	background-color: #fff !important;
+}
+.icon-bar {
+	background-color: #000 !important;
+}
+.p_right0 {
+	padding-right: 0px !important
+}
+.p_left0 {
+	padding-left: 0px !important
+}
+/*
+.Wrapper{
+    width: 100%;
+    max-width: 1170px;
+    margin: auto;
+    box-shadow: 0px 0px 10px 1px #ddd;
+}
+*/
+
+
+.DetailsArea {
+	padding: 50px 0px;
+}
+.DetailsArea .DetailsLeft {
+	position: sticky;
+	top: 50px;
+}
+.DetailsArea .DetailsLeft .DetailsLeftProfile {
+	background-color: #2f94e4;
+	text-align: center;
+	padding: 0 0 15px 0;
+	margin: 0 0 30px 0;
+	box-shadow: 0px 5px 7px #cecece;
+}
+.DetailsArea .DetailsLeft .DetailsLeftProfile h3 {
+	margin: 0;
+	font-size: 27px;
+	font-family: 'Electrolize', sans-serif;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	color: #fff;
+	padding: 10px 0 5px;
+}
+.DetailsArea .DetailsLeft .DetailsLeftProfile p {
+	margin: 0;
+	color: #fff;
+	font-weight: 500;
+	font-family: Raleway;
+	font-size: 16px;
+}
+.DetailsArea .DetailsLeft .DetailsLeftProfile ul {
+	margin: 20px 0 0px;
+}
+.DetailsArea .DetailsLeft .DetailsLeftProfile ul li {
+	display: inline-block;
+	margin: 0 7px 0 0;
+}
+.DetailsArea .DetailsLeft .DetailsLeftProfile ul li a {
+	width: 40px;
+	height: 40px;
+	background-color: #ffffff;
+	display: block;
+	color: #2f94e4;
+	text-align: center;
+	border-radius: 50%;
+	font-size: 17px;
+	line-height: 39px;
+	transition: 0.5s all ease-in-out;
+}
+.DetailsArea .DetailsLeft .DetailsLeftProfile ul li a:hover {
+	background-color: #295385;
+	color: #ffffff;
+	transition: 0.5s all ease-in-out;
+}
+.DetailsRight {
+	box-shadow: 0px 3px 10px #ddd;
+	padding: 25px;
+	background-color: #fff;
+}
+.DetailsRight h3 {
+	margin: 0 0 20px;
+	font-size: 26px;
+	font-family: 'Electrolize', sans-serif;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	color: #000;
+	border-left: 4px solid #2f94e4;
+	padding-left: 10px;
+	line-height: 35px;
+}
+.DetailsRight p {
+	font-family: poppins;
+	color: #000;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 25px;
+	margin: 0 0 20px;
+}
+.DetailsRight .DetailsContent {
+}
+.DetailsRight .DetailsContent ul {
+	font-family: poppins;
+	margin: 0;
+}
+.DetailsRight .DetailsContent ul li {
+	margin: 0 0 12px;
+}
+.DetailsRight .DetailsContent ul li span {
+	display: inline-block;
+}
+.DetailsRight .DetailsContent ul li span.Title {
+	width: 110px;
+	font-size: 14px;
+	font-weight: 600;
+	vertical-align: top;
+	position: relative;
+	color: #868686;
+}
+.DetailsRight .DetailsContent ul li span.Title:after {
+	content: ':';
+	height: 13px;
+	line-height: 12px;
+	position: absolute;
+	right: 6px;
+	top: 6px;
+}
+.DetailsRight .DetailsContent ul li span.Discribe {
+	width: 270px;
+	color: #000;
+	font-size: 15px;
+	font-family: poppins;
+}
+.DetailsRight .DetailsContent ul li .fa {
+	color: #2f94e4;
+}
+.UserArea {
+	padding: 50px 0;
+}
+.btn-form {
+	float: right;
+}
+.hh a {
+    margin-left: 14px;
+    margin-bottom: 10px;
+}
+
+button.btn-sumbit {
+    float: right;
+    padding: 6px 10px;
+    margin-bottom: 12px;
+    margin-top: 2px;
+    border-radius: 6px;
+}
+
+select.form-control.fron-select {
+    width: 500px;
+    float: left;
+    margin-right: 6px;
+}
+h4.heading-status {
+    margin-top: 10px;
+    vertical-align: middle;
+    font-size: 26px;
+}
+.UserArea .UserLeft {
+	box-shadow: 0px 3px 10px #ddd;
+	padding: 12px 0 0;
+	background-color: #fff;
+	text-align: center;
+	width: 32%;
+	position: -webkit-sticky;
+	position: sticky;
+	top: 25px;
+	height: 260px;
+}
+.UserArea .UserLeft form {
+}
+.UserArea .UserLeft form figure {
+	width: 128px;
+	height: 128px;
+	margin: auto;
+}
+.UserArea .UserLeft form figure img {
+}
+.UserArea .UserLeft form figcaption {
+    position: relative;
+    text-align: left;
+    width: 280px;
+    margin: 30px auto 0;
+}
+.UserArea .UserLeft form figcaption span {
+	width: 220px;
+	float: left;
+	background-color: #2f94e4;
+	color: #fff;
+	padding: 10px 0;
+	font-family: poppins;
+	font-weight: 600;
+	text-transform: capitalize;
+	letter-spacing: 0.5px;
+	text-align: center;
+	height: 40px;
+	margin: 0 5px 0 0;
+}
+.UserArea .UserLeft form figcaption span .fa {
+	margin: 0 10px 0 0
+}
+.UserArea .UserLeft form figcaption input {
+	width: 220px;
+	height: 40px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+.form-doc{
+	
+}
+.c-main {
+    background: #e2e8f0;
+}
+i.fa.fa-pencil.mr-10 {
+    margin-right: 95px;
+}
+.DetailsRight a {
+    float: right;
+    margin-top: -50px;
+}
+i.fa.fa-pencil {
+    float: right;
+    margin-top: -46px;
+    margin-right: 70px;
+    font-size: 26px;
+}
+a.btn.btn-behance.btn-primary {
+    float: right;
+}
+button.btn.btn-primary.btn-link {
+    margin-left: 10px;
+    text-decoration: none;
+    color: #fff !important;
+	float:right;
+}
+.popupselect {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
+	padding: 44px;
+}
+
+
+.modal-content {
+    width: 600px !important;
+    height: 364px !important;
+}
+a.btn.btn-primary.btn-home {
+    margin-bottom: 10px;
+}
+.city label {
+    font-size: 20px;
+	color: #000;
+    /* text-align: left; */
+}
+.footer-side{
+	margin-top: 100px;
+}
+.state-name-code{
+	margin-left: 39px;
+	font-size: 20px;
+}
+th.address {
+    text-overflow: ellipsis;
+    overflow: hidden;
+	width: 14%;
+}
+th.status {
+    width: 12%;
+}
+.modal-title.h4 {
+    font-weight: 700;
+}
+.state-name label {
+    /* margin-right: 12px; */
+    font-size: 20px;
+    color: #000;
+}
+.state-name {
+    text-align: left;
+}
+.city{
+	text-align: left;
+}
+.state-name select {
+    width: 365px;
+    height: 45px;
+}
+.city select {
+    height: 45px;
+}
+.popupselect .form-control {
+    color: #2a252599;
+}
+/* .city {
+    display: flex;
+}
+.state-name {
+    display: flex;
+
+} */
+.modal-footer {
+    margin-top: 36px;
+}
+.verifi {
+    float: right;
+}
+.upload-video{
+	float: right;
+}
+.btn-sumbit {
+	display: inline-block;
+padding: 9px 30px;
+color: #fff;
+text-transform: uppercase;
+font-size: 16px;
+border: 1px solid #008fd5;
+letter-spacing: 1px;
+background: #008fd5;
+margin-top: 14px;
+text-decoration: none;
+}
+.UserArea .UserLeft form figcaption button {
+	background-color: #2f94e4;
+	height: 40px;
+	border: none;
+	width: 55px;
+	text-align: center;
+	color: #fff;
+	font-size: 20px;
+	line-height: 8px;
+}
+.UserArea .UserRight {
+	box-shadow: 0px 3px 10px #ddd;
+	padding: 25px;
+	background-color: #fff;
+}
+.UserArea .UserRight h3 {
+	margin: 0 0 20px;
+	font-size: 30px;
+	font-family: 'Electrolize', sans-serif;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	color: #000;
+	padding: 0 0 5px;
+	position: relative;
+}
+.UserArea .UserRight h3:after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 160px;
+	height: 2px;
+	background-color: #000;
+}
+.UserArea .UserRight form {
+}
+.UserArea .UserRight form .form-group {
+}
+.UserArea .UserRight form .form-group label {
+	text-transform: capitalize;
+	font-weight: 500;
+	font-family: poppins;
+	color: #000;
+	font-size: 15px;
+	display: block;
+	margin: 0 0 10px;
+}
+.UserArea .UserRight form .form-group .form-control {
+	border: 1px solid #cecece;
+	border-radius: 4px;
+	box-shadow: none;
+	height: 39px;
+	font-family: poppins;
+	font-size: 15px;
+	color: #000;
+}
+.UserArea .UserRight form .form-group textarea.form-control {
+	height: auto;
+}
+.UserArea .UserRight form .form-group a {
+	font-size: 22px;
+	height: 40px;
+	display: inline-block;
+	margin: 0 8px 0 0;
+	color: #aba8a8;
+}
+.UserArea .UserRight form .form-group a:hover {
+	color: #000;
+}
+.UserArea .UserRight form .form-group .CheckBoxArea {
+}
+.UserArea .UserRight form .form-group .CheckBoxArea .CheckBox {
+	position: relative;
+	padding-left: 27px;
+	margin: 0 0 20px 0;
+	cursor: pointer;
+	font-size: 14px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	width: 25%;
+	font-weight: 500;
+	color: #656565;
+	font-family: poppins;
+	display: initial;
+	float: left;
+	line-height: 18px;
+}
+.UserArea .UserRight form .form-group .CheckBoxArea .CheckBox input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+.UserArea .UserRight form .form-group .CheckBoxArea .CheckBox .checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 17px;
+	width: 20px;
+	background-color: transparent;
+	border: 1px solid #000;
+}
+.UserArea .UserRight form .form-group .CheckBoxArea .CheckBox:hover input ~ .checkmark {
+	background-color: #000;
+}
+.UserArea .UserRight form .form-group .CheckBoxArea .CheckBox input:checked ~ .checkmark {
+	background-color: #000000;
+}
+.UserArea .UserRight form .form-group .CheckBoxArea .CheckBox .checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+.UserArea .UserRight form .form-group .CheckBoxArea .CheckBox input:checked ~ .checkmark:after {
+	display: block;
+}
+.UserArea .UserRight form .form-group .CheckBoxArea .CheckBox .checkmark:after {
+	left: 7px;
+	top: 1px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 2px 2px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(57deg);
+}
+.UserArea .UserRight form button {
+	display: block;
+	width: 170px;
+	background: transparent;
+	color: #000;
+	font-weight: 600;
+	font-size: 16px;
+	padding: 10px 0;
+	border: 2px solid #000;
+	position: relative;
+	margin: 10px 0 10px 0;
+}
+.UserArea .UserRight form button:before {
+	content: '';
+	top: 0;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	transform: scaleX(0);
+	transition: all 0.4s ease 0s;
+	z-index: 0;
+}
+.UserArea .UserRight form button:hover {
+	color: #fff;
+	z-index: 1;
+}
+.UserArea .UserRight form button:hover:before {
+	transform: scaleX(1);
+	transition: all 0.4s ease 0s;
+	z-index: -1;
+}
+
+
+
+.tadble-detail h2 {
+    margin-bottom: 10px;
+    margin: 0 0 20px;
+    font-size: 26px;
+    font-family: 'Electrolize', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #000;
+    border-left: 4px solid #2f94e4;
+    padding-left: 10px;
+    line-height: 35px;
+}
