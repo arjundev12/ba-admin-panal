@@ -15,7 +15,7 @@ const _nav =  [
   {
     _tag: 'CSidebarNavItem',
     name: 'Customers',
-    to: '/users',
+    to: '/customerlist',
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
   },
   // {

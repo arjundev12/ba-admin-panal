@@ -13,6 +13,45 @@ import '../../css/style.css'
 const Users = () => {
   //httpEquiv
   let history = useHistory();
+  const [showPerPage, setShowPerPage] = useState(10);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [index, setIndex] = useState(1);
+  const [filters, setFilters] = useState({})
+
+  // const [customer, setcustomer] = useState([]);
+  const [search, setSearch] = useState({});
+
+  useEffect(() => {
+    loadData(page, filters)
+  }, [page, total, filters, search])
+  const [customerlist, setCustomerlist] = useState([])
+  const loadData = async (page, filters = null) => {
+    const data = {
+      page: page,
+      limit: 10
+    }
+
+    if (!(Object.keys(filters).length === 0 && filters.constructor === Object)) {
+      data.sort = filters
+    }
+    if (!(Object.keys(search).length === 0 && search.constructor === Object)) {
+      data.toId = search.text
+    }
+    data._id = localStorage.getItem('subadminid')
+    console.log("datadata", data)
+
+    let response = await axios.post(`${CONSTANT.baseUrl}/api/admin/customer-list`, data);
+    if (response.data.code == 200) {
+      toast("Add successfully");
+      // setCustomer(response.data.data)
+      console.log("datadata", response.data.data.docs)
+      setCustomerlist(response.data.data.docs);
+      await setTotal(response.data.data.total)
+    } else {
+      console.log("response", response)
+    }
+  }
   const [show, setShow] = useState(false);
   const [options, setOptions] = useState({
     newCustomer: false,
@@ -110,8 +149,6 @@ const Users = () => {
     else if (e.target.name == 'term') {
       setFormData({ ...formData, term: e.target.value });
     }
-
-
     else if (e.target.name == 'Shipping_Address_copy') {
       setFormData({ ...formData, Shipping_Address_copy: !Shipping_Address_copy });
       setAddress({
@@ -227,7 +264,7 @@ const Users = () => {
 
   }
   const [key, setKey] = useState('home');
-
+  const [key1, setKeylist] = useState('transaction-list');
 
 
   const [filepath, setFilepath] = useState();
@@ -296,21 +333,41 @@ const Users = () => {
 
               <div class="row customer-text1">
                 <div class="col-md-5 col-sm-5 heading-customer">
-                  <h2 class="customer-list">Anisha Impex Limited</h2>
-                  <ul>
-                    <li><a href="#"><i class="fa fa-envelope-o"></i></a></li>
-                    <li><span tooltip="9582089971" flow="down"><i class="fa fa-phone"></i></span></li>
-                    <div class="main">
-
+                  {  <div class="card-box">
+                    <div class="card1">
+                      <h2>₹23,50,570</h2>
+                      <p>26 Estimates</p>
                     </div>
-                  </ul>
-                  <p>Anisha Impex Limited | 56/53 Site IV Industries Area Sahibabad Gaziabad, Sahibabad,Gaziabad 201010</p>
-                  <div class="form-group">
-                    {/* <!--  <a href="#"><label>Add Notes</label></a> --> */}
-                    <a href="#"><textarea class="form-control" rows="5" id="comment" placeholder="Add Notes"></textarea></a>
+                    <div class="card2">
+                      <div class="activity-heading">
+                        {/* <h2>Unbilled Last 365 Days</h2> */}
+                      </div>
+                      <h2>₹0</h2>
+                      <p>0 Unbilled Activity</p>
+                    </div>
+                    <div class="card3">
+                      <div class="activity-heading">
+                        {/* <h2>Unpaid Last 365 Days</h2> */}
+                      </div>
+                      <h2>₹21,00,609</h2>
+                      <p>12 Overdue</p>
+                    </div>
+                    <div class="card4">
+                      <h2>₹23,50,570</h2>
+                      <p>13 Open Invoices</p>
+                    </div>
+                    <div class="card5">
+                      <div class="activity-heading">
+                        {/* <h2>Paid</h2> */}
+                      </div>
+                      <h2>₹23,600</h2>
+                      <p>2 Paid Last 30 Days</p>
+                    </div>
                   </div>
-                  {/* <!--    <span>Unit No 203, Plaza p 3 Central Square Bara Hindu Rao. Delhi Central Delhi DL 110006 IN 110006</span> --> */}
+                 }
+
                 </div>
+
                 <div class="col-md-7 col-sm-7"><div class="header-rightside hh">
                   <ul class="list-inline header-top">
                     <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">
@@ -326,18 +383,6 @@ const Users = () => {
                         <Dropdown.Item eventKey="option-1" >New Customer</Dropdown.Item>
                         <Dropdown.Item eventKey="option-2">Invoice</Dropdown.Item>
                       </DropdownButton>
-                      {/* <a href="#" class="add-project" data-toggle="modal" data-target="#add_project"><select name="fontType" id="fontType" class="form-control">
-                        <option value=""  onClick={e => handleShowDropdown(e)}>New Customer</option>
-                        <option value="">Invoice</option>
-                        <option value="">Payment</option>
-                        <option value="">Estimate</option>
-                        <option value="">Sales Receipt</option>
-                        <option value="">Credit Note</option>
-                        <option value="">Delayed Charge</option>
-                        <option value="">Time Activity</option>
-                        <option value="">Customer Statement</option>
-                      </select>
-                      </a> */}
                     </li>
 
                   </ul>
@@ -356,270 +401,66 @@ const Users = () => {
               </div>
               <div class="row">
                 <div class="col-md-12 mb-4 pt-15">
-                  <ul class="nav nav-tabs" role="tablist">
-                    <li class="nav-item">
-                      <a class="nav-link active" data-toggle="tab" href="#transaction-list" role="tab" aria-controls="transaction-list" aria-expanded="true">Transaction List</a>
-                    </li>
-                    <li class="nav-item pl-15">
-                      <a class="nav-link" data-toggle="tab" href="#customer-details" role="tab" aria-controls="customer-details" aria-expanded="false">Customers Details</a>
-                    </li>
+                  {/* <DropdownButton className='fltR' alignRight
+                    title="filter"
+                    id="dropdown-menu-align-right"
 
-                  </ul>
+                    onSelect={e => onInputChange(e)}>
+                    <Dropdown.Item eventKey="option-1">Customer</Dropdown.Item>
+                    <Dropdown.Item eventKey="option-2">Company</Dropdown.Item>
+                  </DropdownButton> */}
+                 <div class="col-md-5 col-sm-5">
+                    <div id="custom-search-input">
+                      <div class="input-group">
+                        <input type="text" class="  search-query form-control" placeholder="Search" />
+                        <span class="input-group-btn">
+                          <button class="btn btn-danger" type="button">
+                            <i class="fa fa-search" aria-hidden="true"></i>
 
-                  <div class="tab-content border-bg">
-                    <div class="tab-pane active" id="transaction-list" role="tabpanel" aria-expanded="true">
-                      <div class="row search-box">
-                        <div class="col-md-5 col-sm-5">
-                          <div class="filter">
-                            <select name="fontType" id="fontType" class="form-control">
-                              <option value="">Filter</option>
-                              <option value="">a</option>
-                              <option value="">b</option>
-                              <option value="">c</option>
-                            </select>
-                          </div>
-                        </div>
-                        <div class="col-md-7 col-sm-7">
-                          <ul class="icon-right">
-                            <li><a href="#"><i class="fa fa-cog"></i></a></li>
-                            <li><a href="#"><i class="fa fa-download"></i></a></li>
-                            <li><a href="#"><i class="fa fa-print"></i></a></li>
-
-                          </ul>
-                        </div>
-                      </div>
-                      {/* <!--    <div class="row pagination-no">
-                                <div class="col-md-5 col-sm-5">
-                                  
-                                </div>
-                                <div class="col-md-7 col-sm-7 pd-0">
-                                      <div class="pagination">
-                                        <ul></ul>
-                                      </div>
-                                  </div>
-                                </div> --> */}
-                      <div class="customer-table1">
-                        <table class="table" cellspacing="0">
-                          <thead>
-                            <tr>
-                              <th><input type="checkbox" value="" /></th>
-                              <th > Date</th>
-                              <th >Type</th>
-                              <th >No</th>
-                              <th >Memo</th>
-                              <th >Due Date</th>
-                              <th >Balance</th>
-                              <th >Total Before</th>
-                              <th >Tax</th>
-                              <th >Total</th>
-                              <th >Status</th>
-                              <th >Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {/* <!--1--> */}
-                            <tr>
-                              <td><input type="checkbox" value="" /></td>
-                              <td ><a href="#">23/08/2022</a></td>
-                              <td >Invoice</td>
-                              <td >5036</td>
-                              <td ></td>
-                              <td >23/08/2022</td>
-                              <td >₹0.00</td>
-
-                              <td >₹70,000.00</td>
-                              <td >₹12,600.00</td>
-                              <td >₹82,600.00</td>
-                              <td >Paid</td>
-                              <td >Print <i class="fa fa-angle-down"></i></td>
-                            </tr>
-                            {/* <!--2--> */}
-                            <tr>
-                              <td ><input type="checkbox" value="" /></td>
-                              <td ><a href="#">23/08/2022</a></td>
-                              <td >Invoice</td>
-                              <td >5036</td>
-                              <td ></td>
-                              <td >23/08/2022</td>
-                              <td >₹0.00</td>
-
-                              <td >₹70,000.00</td>
-                              <td >₹12,600.00</td>
-                              <td >₹82,600.00</td>
-                              <td >Paid</td>
-                              <td >Print <i class="fa fa-angle-down"></i></td>
-                            </tr>
-                            {/* <!--3--> */}
-                            <tr>
-                              <td><input type="checkbox" value="" /></td>
-                              <td ><a href="#">23/08/2022</a></td>
-                              <td >Invoice</td>
-                              <td >5036</td>
-                              <td ></td>
-                              <td >23/08/2022</td>
-                              <td >₹0.00</td>
-
-                              <td >₹70,000.00</td>
-                              <td >₹12,600.00</td>
-                              <td >₹82,600.00</td>
-                              <td >Paid</td>
-                              <td >Print <i class="fa fa-angle-down"></i></td>
-                            </tr>
-                            {/* <!--4--> */}
-                            <tr>
-                              <td ><input type="checkbox" value="" /></td>
-                              <td ><a href="#">23/08/2022</a></td>
-                              <td >Invoice</td>
-                              <td >5036</td>
-                              <td ></td>
-                              <td >23/08/2022</td>
-                              <td >₹0.00</td>
-                              <td >₹70,000.00</td>
-                              <td >₹12,600.00</td>
-                              <td >₹82,600.00</td>
-                              <td >Paid</td>
-                              <td >Print <i class="fa fa-angle-down"></i></td>
-                            </tr>
-                            {/* <!--5--> */}
-                            <tr>
-                              <td></td>
-                              <td ><a href="#"></a></td>
-                              <td >Total</td>
-                              <td ></td>
-                              <td ></td>
-                              <td ></td>
-                              <td ></td>
-                              {/* <!-- <td>Create Invoice<i class="fa fa-angle-down"></i>
-</td> --> */}
-                              <td ></td>
-                              <td ></td>
-                              <td >₹120,60,00.00</td>
-                              <td ></td>
-                              <td ></td>
-                            </tr>
-
-
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                    <div class="tab-pane" id="customer-details" role="tabpanel" aria-expanded="false">
-                      <div class="customer-table1">
-                        <table class="table" cellspacing="0">
-                          <thead>
-                            <tr>
-                              <th><input type="checkbox" value="" /></th>
-                              <th > Date</th>
-                              <th >Type</th>
-                              <th >No</th>
-                              <th >Memo</th>
-                              <th >Due Date</th>
-                              <th >Balance</th>
-                              <th >Total Before</th>
-                              <th >Tax</th>
-                              <th >Total</th>
-                              <th >Status</th>
-                              <th >Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {/* <!--1--> */}
-                            <tr>
-                              <td><input type="checkbox" value="" /></td>
-                              <td ><a href="#">23/08/2022</a></td>
-                              <td >Invoice</td>
-                              <td >5036</td>
-                              <td ></td>
-                              <td >23/08/2022</td>
-                              <td >₹0.00</td>
-
-                              <td >₹70,000.00</td>
-                              <td >₹12,600.00</td>
-                              <td >₹82,600.00</td>
-                              <td >Paid</td>
-                              <td >Print <i class="fa fa-angle-down"></i></td>
-                            </tr>
-                            {/* <!--2--> */}
-                            <tr>
-                              <td ><input type="checkbox" value="" /></td>
-                              <td ><a href="#">23/08/2022</a></td>
-                              <td >Invoice</td>
-                              <td >5036</td>
-                              <td ></td>
-                              <td >23/08/2022</td>
-                              <td >₹0.00</td>
-
-                              <td >₹70,000.00</td>
-                              <td >₹12,600.00</td>
-                              <td >₹82,600.00</td>
-                              <td >Paid</td>
-                              <td >Print <i class="fa fa-angle-down"></i></td>
-                            </tr>
-                            {/* <!--3--> */}
-                            <tr>
-                              <td><input type="checkbox" value="" /></td>
-                              <td ><a href="#">23/08/2022</a></td>
-                              <td >Invoice</td>
-                              <td >5036</td>
-                              <td ></td>
-                              <td >23/08/2022</td>
-                              <td >₹0.00</td>
-
-                              <td >₹70,000.00</td>
-                              <td >₹12,600.00</td>
-                              <td >₹82,600.00</td>
-                              <td >Paid</td>
-                              <td >Print <i class="fa fa-angle-down"></i></td>
-                            </tr>
-                            {/* <!--4--> */}
-                            <tr>
-                              <td ><input type="checkbox" value="" /></td>
-                              <td ><a href="#">23/08/2022</a></td>
-                              <td >Invoice</td>
-                              <td >5036</td>
-                              <td ></td>
-                              <td >23/08/2022</td>
-                              <td >₹0.00</td>
-                              <td >₹70,000.00</td>
-                              <td >₹12,600.00</td>
-                              <td >₹82,600.00</td>
-                              <td >Paid</td>
-                              <td >Print <i class="fa fa-angle-down"></i></td>
-                            </tr>
-                            {/* <!--5--> */}
-                            <tr>
-                              <td></td>
-                              <td ><a href="#"></a></td>
-                              <td >Total</td>
-                              <td ></td>
-                              <td ></td>
-                              <td ></td>
-                              <td ></td>
-                              {/* <!-- <td>Create Invoice<i class="fa fa-angle-down"></i>
-</td> --> */}
-                              <td ></td>
-                              <td ></td>
-                              <td >₹120,60,00.00</td>
-                              <td ></td>
-                              <td ></td>
-                            </tr>
-
-
-                          </tbody>
-                        </table>
+                          </button>
+                        </span>
                       </div>
                     </div>
                   </div>
+                  <Table striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>S.no</th>
+                        <th>GST REGISTRATION TYPE11</th>
+                        <th>GSTIN </th>
+                        <th>PHONE</th>
+                        {/* <th>Minner Status</th> */}
+                        <th>OPEN BALANCE</th>
+                        <th>ACTION</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {
+                        customerlist.map((item, i) => <tr>
+                          <td>{i + 1}</td>
+                          <td>{item.gst_registration_type}</td>
+                          <td>{item.gstin}</td>
+                          <td>{item.number}</td>
+                          <td>{"00"}</td>
+                          {/* <td>{item.minner_Activity + ""}</td> */}
+                          {/* <td>
+                                <select class="form-control" name="minner_Activity" value={item.minner_Activity}
+                                    onChange={e => onInputChange(e, item)}>
+                                    <option value= {true} >Active</option>
+                                    <option value={false}>Inactive</option>
+                                </select></td> */}
+                          {/* <td><Link className="btn btn-primary mr-2 " to={`/user/${item._id}`}>view </Link>
+                                <Link className="btn btn-primary mr-2" to={`/user/edit/${item._id}`}> edit </Link>
+                                </td> */}
+                        </tr>)
+                      }
+                    </tbody>
+                  </Table>
+
                 </div>
               </div>
             </div>
-            {/* <!-- Main content --> */}
-
           </div>
-
-
-
-          {/* <!-- Modal --> */}
           <div id="add_project" class="modal fade" role="dialog">
             <div class="modal-dialog">
               <div>
@@ -882,7 +723,7 @@ const Users = () => {
                           </Tab>
                           <Tab eventKey="Attachments" title="Attachments" >
                             <div className="md-6 col-sm-6 gst-bg"></div>
-                            <input type="file" name="doc" class="form-control" onChange= {e=> onSetFile(e)} ></input>
+                            <input type="file" name="doc" class="form-control" onChange={e => onSetFile(e)} ></input>
                           </Tab>
                         </Tabs>
                       </div>
@@ -975,7 +816,7 @@ const Users = () => {
             <h4 class="modal-title">Card Information</h4>
             <button type="button" class="close" data-dismiss="modal" name='cardDetail' onClick={handleCloseCity}>×</button>
           </div>
-        
+
           <Modal.Body>
             Modal body text goeshgchgchggggggggggggggggggggcv
             vbvjhvjvjvnbnbkhvkhcvjgcgchchgcbvhg

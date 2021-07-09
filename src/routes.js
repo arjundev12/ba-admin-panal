@@ -24,7 +24,8 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'));
 // const AddSubscription = React.lazy(() => import('./views/subscription/addSubscription'));
 
 const Users = React.lazy(() => import('./views/users/Users'));
-// const User = React.lazy(() => import('./views/users/User'));
+const Customerlist = React.lazy(() => import('./views/users/customerlist'));
+const CustomerDetails = React.lazy(() => import('./views/users/customerDetails'));
 // const EditUser = React.lazy(() => import('./views/users/editUser'));
 // const AddUsers = React.lazy(() => import('./views/users/addUser'));
 
@@ -33,7 +34,9 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard },
   { path: '/users', exact: true, name: 'Users', component: Users },
-  // { path: '/categories', exact: true, name: 'Categories', component: getCategories },
+  { path: '/customerlist', exact: true, name: 'Customerlist', component: Customerlist },
+
+  { path: '/customer-details/:id', exact: true, name: 'CustomerDetails', component: CustomerDetails },
   // { path: '/add/category', exact: true, name: 'addCategory', component: addCategories },
 
   // { path: '/subcategories', exact: true, name: 'Categories', component: getSubcategories },
