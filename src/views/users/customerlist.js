@@ -26,8 +26,8 @@ const CustomerList = () => {
         loadData(page, filters)
     }, [page, total, filters, search])
     const [customerlist, setCustomerlist] = useState([])
-    const onInputSearch = async (e)=>{
-        console.log("search text", e.target.name, e.target.value )
+    const onInputSearch = async (e) => {
+        console.log("search text", e.target.name, e.target.value)
         setSearch({ ...search, [e.target.name]: e.target.value });
     }
     const loadData = async (page, filters = null) => {
@@ -199,6 +199,10 @@ const CustomerList = () => {
     const onInputChange = async (e) => {
         console.log("formData", formData)
         console.log("targat", e.target.name, e.target.value)
+        if(e.target.name=='email'){
+            handleFormValidation()
+            setFormData({ ...formData, [e.target.name]: e.target.value })
+        }
         setFormData({ ...formData, [e.target.name]: e.target.value })
     };
     const onInputChangeD = async (e) => {
@@ -216,58 +220,81 @@ const CustomerList = () => {
         console.log("hiiiiiiiii", e.target.name, cardModal)
         setCardModal(!cardModal)
     }
+    const [formErrors, setFormErrors] = useState({});
+    const handleFormValidation = async () => {
+        let formErrors = {};
+        let formIsValid = true;
+        //price number    
+        if (!email && email == "") {
+            formIsValid = false;
+            formErrors["emailErr"] = "email is required.";
+        } else if (email) {
+            var mobPattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            if (!mobPattern.test(email)) {
+                formIsValid = false;
+                formErrors["emailErr"] = "Please enter valid email address.";
+            }
+        }
+        setFormErrors(formErrors);
+        return formIsValid;
+    }
+    const { emailErr } = formErrors
     const onSubmit = async (e) => {
         e.preventDefault();
         console.log("form data", formData, address)
-        let data = formData
-        if (address) {
-            data.billing_address = {
-                street: b_street,
-                city: b_city,
-                country: b_country,
-                pin: b_pin,
-                state: b_state
+        let checkvalidation = await handleFormValidation()
+        if (checkvalidation) {
+            let data = formData
+            if (address) {
+                data.billing_address = {
+                    street: b_street,
+                    city: b_city,
+                    country: b_country,
+                    pin: b_pin,
+                    state: b_state
+                }
+                data.shipping_address = {
+                    street: s_street,
+                    city: s_city,
+                    country: s_country,
+                    pin: s_pin,
+                    state: s_state
+                }
             }
-            data.shipping_address = {
-                street: s_street,
-                city: s_city,
-                country: s_country,
-                pin: s_pin,
-                state: s_state
+            data.company = {
+                company_name: company_name
+            }
+            data.gstin = gstin_no
+            data.tax_info = {
+                tax_rego_no: tax_rego_no,
+                cst_reg_no: cst_reg_no,
+                pan_no: pan_no,
+                apply_tds_customer: apply_tds_customer
+
+            }
+            data.payment_and_billing = {
+                preferred_payment_method: preferred_payment_method,
+                preferred_delivery_method: preferred_delivery_method,
+                term: term,
+                oppning_balance: oppning_balance,
+                as_of_date: as_of_date
+            }
+            data.created_by = await localStorage.getItem('subadminid')
+            console.log("data", data)
+            let response = await axios.post(`${CONSTANT.baseUrl}/api/admin/add-customer`, data);
+
+            if (response.data.code == 200) {
+                toast("Add successfully");
+                // setTimeout(function () { history.push("/users"); }, 3000);
+                history.push("/users");
+            } else {
+                console.log("response", response)
             }
         }
-        data.company = {
-            company_name: company_name
-        }
-        data.gstin = gstin_no
-        data.tax_info = {
-            tax_rego_no: tax_rego_no,
-            cst_reg_no: cst_reg_no,
-            pan_no: pan_no,
-            apply_tds_customer: apply_tds_customer
 
-        }
-        data.payment_and_billing = {
-            preferred_payment_method: preferred_payment_method,
-            preferred_delivery_method: preferred_delivery_method,
-            term: term,
-            oppning_balance: oppning_balance,
-            as_of_date: as_of_date
-        }
-        data.created_by = await localStorage.getItem('subadminid')
-        console.log("data", data)
-        let response = await axios.post(`${CONSTANT.baseUrl}/api/admin/add-customer`, data);
-
-        if (response.data.code == 200) {
-            toast("Add successfully");
-            // setTimeout(function () { history.push("/users"); }, 3000);
-            history.push("/users");
-        } else {
-            console.log("response", response)
-        }
 
     }
-    const [key, setKey] = useState('home');
+    const [key, setKey] = useState('address');
     const [key1, setKeylist] = useState('transaction-list');
 
 
@@ -394,7 +421,7 @@ const CustomerList = () => {
                             <div class="col-md-5 col-sm-5">
                                 <div id="custom-search-input">
                                     <div class="input-group">
-                                        <input type="text" class="  search-query form-control" placeholder="Search" name="text" onChange= {e=> onInputSearch(e)} />
+                                        <input type="text" class="  search-query form-control" placeholder="Search" name="text" onChange={e => onInputSearch(e)} />
                                         <span class="input-group-btn">
                                             <button class="btn btn-danger" type="button">
                                                 <i class="fa fa-search" aria-hidden="true"></i>
@@ -419,7 +446,7 @@ const CustomerList = () => {
                                         <thead>
                                             <tr>
                                                 <th>S.no</th>
-                                                <th>Name</th>
+                                                <th>Customer/Company</th>
                                                 <th>GST REGISTRATION TYPE</th>
                                                 <th>GSTIN </th>
                                                 <th>PHONE</th>
@@ -536,6 +563,9 @@ const CustomerList = () => {
                                                     <div class="form-group mail-bg">
                                                         <label>Email</label>
                                                         <input type="text" name="email" value={email} class="form-control" placeholder="Separate Multiple Email" onChange={(e) => onInputChange(e)} />
+                                                        {emailErr &&
+                                                            <div style={{ color: "red", paddingBottom: 10 }}>{emailErr}</div>
+                                                        }
                                                     </div>
                                                     <div class="form-right">
                                                         <div class="form-group phone">
@@ -631,19 +661,19 @@ const CustomerList = () => {
                                                                     <form>
                                                                         <div class="row">
                                                                             <div class="form-group col-sm-12">
-                                                                                <textarea rows="5" name="s_street" value={s_street} class="form-control" placeholder="Street" onChange={(e) => onInputChangeAddress(e)}></textarea>
+                                                                                <textarea rows="5" name="s_street" value={s_street} class="form-control" placeholder="Street" disabled={Shipping_Address_copy == true ? "disabled" : ""} onChange={(e) => onInputChangeAddress(e)}></textarea>
                                                                             </div>
                                                                             <div class="form-group col-sm-6 pd-0">
-                                                                                <input type="text" name="s_city" value={s_city} class="form-control" placeholder="City/Town" onChange={(e) => onInputChangeAddress(e)} />
+                                                                                <input type="text" name="s_city" value={s_city} class="form-control" placeholder="City/Town" disabled={Shipping_Address_copy == true ? "disabled" : ""} onChange={(e) => onInputChangeAddress(e)} />
                                                                             </div>
                                                                             <div class="form-group col-sm-6 pd-0">
-                                                                                <input type="text" name="s_state" value={s_state} class="form-control" placeholder="State" onChange={(e) => onInputChangeAddress(e)} />
+                                                                                <input type="text" name="s_state" value={s_state} class="form-control" placeholder="State" disabled={Shipping_Address_copy == true ? "disabled" : ""} onChange={(e) => onInputChangeAddress(e)} />
                                                                             </div>
                                                                             <div class="form-group col-sm-6 pd-0">
-                                                                                <input type="text" name="s_pin" value={s_pin} class="form-control" placeholder="PIN Code" onChange={(e) => onInputChangeAddress(e)} />
+                                                                                <input type="text" name="s_pin" value={s_pin} class="form-control" placeholder="PIN Code" disabled={Shipping_Address_copy == true ? "disabled" : ""} onChange={(e) => onInputChangeAddress(e)} />
                                                                             </div>
                                                                             <div class="form-group col-sm-6 pd-0">
-                                                                                <input type="text" name="s_country" value={s_country} class="form-control" placeholder="Country" onChange={(e) => onInputChangeAddress(e)} />
+                                                                                <input type="text" name="s_country" value={s_country} class="form-control" placeholder="Country" disabled={Shipping_Address_copy == true ? "disabled" : ""} onChange={(e) => onInputChangeAddress(e)} />
                                                                             </div>
                                                                         </div>
                                                                     </form>
@@ -726,51 +756,7 @@ const CustomerList = () => {
                                                 </Tabs>
                                             </div>
                                         </div>
-                                        {/* <div class="row hh">
-                      <div class="col-md-12 mb-4">
-                        <ul class="nav nav-tabs" role="tablist">
-                          <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#address" role="tab" aria-controls="address" aria-expanded="true">Address</a>
-                          </li>
-                          <li class="nav-item pl-15">
-                            <a class="nav-link" data-toggle="tab" href="#notes" role="tab" aria-controls="notes" aria-expanded="false">Notes</a>
-                          </li>
-                          <li class="nav-item pl-15">
-                            <a class="nav-link" data-toggle="tab" href="#tax-info" role="tab" aria-controls="tax-info" aria-expanded="false">Tax Info</a>
-                          </li>
-                          <li class="nav-item pl-15">
-                            <a class="nav-link" data-toggle="tab" href="#payment" role="tab" aria-controls="payment" aria-expanded="false">Payment and Billing</a>
-                          </li>
-                          <li class="nav-item pl-15">
-                            <a class="nav-link" data-toggle="tab" href="#attachment" role="tab" aria-controls="attachment" aria-expanded="false">Attachments</a>
-                          </li>
-                        </ul>
-
-                        <div class="tab-content bill-address">
-                          <div class="tab-pane active" id="address" role="tabpanel" aria-expanded="true">
-
-                          </div>
-                          <div class="tab-pane" id="notes" role="tabpanel" aria-expanded="false">
-                            2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                          </div>
-                          <div class="tab-pane" id="tax-info" role="tabpanel" aria-expanded="false">
-                            3. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                          </div>
-                          <div class="tab-pane" id="payment" role="tabpanel" aria-expanded="false">
-                            4. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                          </div>
-                          <div class="tab-pane" id="attachment" role="tabpanel" aria-expanded="false">
-                            5. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                          </div>
-                        </div>
-                      </div>
-                    </div> */}
                                     </div>
-
                                     <div class='footer-side'>
                                         <Modal.Footer>
                                             <Button variant="secondary" name='newCustomer' onClick={handleCloseCity}>
@@ -791,17 +777,8 @@ const CustomerList = () => {
                 </div>
                 <script src="js/jquery.min.js"></script>
                 <script src="js/popper.min.js"></script>
-
-
-
-
-
             </body>
-
         </>
-
-
-
     )
 }
 
