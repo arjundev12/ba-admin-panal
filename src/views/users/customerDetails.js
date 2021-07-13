@@ -827,7 +827,7 @@ const CustomerDetails = () => {
                                                                     <option value="cheque" >Cheque</option>
                                                                     <option value="credit_Card">Credit Card</option>
                                                                 </select>
-                                                                {preferred_payment_method == 'credit_Card' ? <button name="carddetails" onClick={e => openCardModal(e)}>enter credit card detail</button> : ""}
+                                                                {/* {preferred_payment_method == 'credit_Card' ? <button name="carddetails" onClick={e => openCardModal(e)}>enter credit card detail</button> : ""} */}
                                                             </div>
                                                             <div class="form-group display">
                                                                 <label>Preferred delivery method</label>
