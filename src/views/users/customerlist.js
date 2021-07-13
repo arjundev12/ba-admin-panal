@@ -10,6 +10,11 @@ import *as  CONSTANT from '../../constant'
 import Pagination from '../pagination/pagination'
 
 import '../../css/style.css'
+import setting1 from  '../../assets/settings.png'
+import export1 from  '../../assets/export.png'
+import print from  '../../assets/printer.png'
+
+
 const CustomerList = () => {
     //httpEquiv
     let history = useHistory();
@@ -127,10 +132,11 @@ const CustomerList = () => {
     const { b_street, b_city, b_state, b_pin, b_country, s_street, s_city, s_state, s_pin, s_country } = address
     const [customer, setCustomer] = useState([])
     const handleShowDropdown = async (e) => {
-        console.log("targat", e.target.name, e.target.value)
+        console.log("targat", e.target.name, e.target.value, localStorage.getItem('subadminid'))
         if (e.target.name == 'is_sub_customer') {
             if (!is_sub_customer) {
                 let response = await axios.get(`${CONSTANT.baseUrl}/api/admin/get-customer?_id=${localStorage.getItem('subadminid')}`);
+                console.log("responsedayaa", response)
                 if (response.data.code == 200) {
                     toast("Add successfully");
                     setCustomer(response.data.data)
@@ -352,10 +358,10 @@ const CustomerList = () => {
                 <div class="app-body">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-5 col-sm-5">
+                            <div class="col-md-5 col-sm-5 pd-0">
                                 <h2 class="customer">Customers</h2>
                             </div>
-                            <div class="col-md-7 col-sm-7">
+                            <div class="col-md-7 col-sm-7 pd-0">
                                 <div class="header-rightside">
                                     <ul class="list-inline header-top">
                                         <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">
@@ -390,35 +396,35 @@ const CustomerList = () => {
                             <div class="card-box">
                                 <div class="card1">
                                     <h2>₹23,50,570</h2>
-                                    <p>26 Estimates</p>
+                                    <p className="paid">26 Estimates</p>
                                 </div>
                                 <div class="card2">
                                     <div class="activity-heading">
                                         <h2>Unbilled Last 365 Days</h2>
                                     </div>
-                                    <h2>₹0</h2>
-                                    <p>0 Unbilled Activity</p>
+                                    <h3>₹0</h3>
+                                    <p className="paid">0 Unbilled Activity</p>
                                 </div>
                                 <div class="card3">
                                     <div class="activity-heading">
                                         <h2>Unpaid Last 365 Days</h2>
                                     </div>
-                                    <h2>₹21,00,609</h2>
-                                    <p>12 Overdue</p>
+                                    <h3>₹21,00,609</h3>
+                                    <p className="paid">12 Overdue</p>
                                 </div>
                                 <div class="card4">
                                     <h2>₹23,50,570</h2>
-                                    <p>13 Open Invoices</p>
+                                    <p className="paid">13 Open Invoices</p>
                                 </div>
                                 <div class="card5">
                                     <div class="activity-heading">
                                         <h2>Paid</h2>
                                     </div>
-                                    <h2>₹23,600</h2>
-                                    <p>2 Paid Last 30 Days</p>
+                                    <h3>₹23,600</h3>
+                                    <p className="paid">2 Paid Last 30 Days</p>
                                 </div>
                             </div>
-                            <div class="col-md-5 col-sm-5">
+                            <div class="col-md-5 col-sm-5 pd-0">
                                 <div id="custom-search-input">
                                     <div class="input-group">
                                         <input type="text" class="  search-query form-control" placeholder="Search" name="text" onChange={e => onInputSearch(e)} />
@@ -433,14 +439,14 @@ const CustomerList = () => {
                             </div>
                             <div class="col-md-7 col-sm-7 pd-0">
                                 <ul class="icon-right">
-                                    <li><a href="#"><i class="fa fa-cog"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-download"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-print"></i></a></li>
+                                    <li><a ><img src={setting1}/></a></li>
+                                    <li><a ><img src={export1}/></a></li>
+                                    <li><a ><img src={print}/></a></li>
 
                                 </ul>
                             </div>
 
-                            <div class="container-fluid">
+                            <div class="container-fluid pd-0">
                                 <div class="customer-table">
                                     <Table striped bordered hover>
                                         <thead>
@@ -459,11 +465,16 @@ const CustomerList = () => {
                                             {
                                                 customerlist.map((item, i) => <tr>
                                                     <td>{i + 1}</td>
-                                                    <Link to={`/customer-details/${item._id}`}> <td>{item.first_name}</td></Link>
-                                                    <td>{item.gst_registration_type}</td>
+                                                    <td><a href={`#/customer-details/${item._id}`}> {item.first_name}</a></td>
+                                                    {/* <Link to={`/customer-details/${item._id}`}> <td>{item.first_name}</td></Link> */}
+                                                    <td><a href={`#/customer-details/${item._id}`}> {item.gst_registration_type}</a></td>
+                                                    <td><a href={`#/customer-details/${item._id}`}> {item.gstin}</a></td>
+                                                    <td><a href={`#/customer-details/${item._id}`}> {item.number}</a></td>
+                                                    <td><a href={`#/customer-details/${item._id}`}> {item.payment_and_billing.oppning_balance}</a></td>
+                                                    {/* <td>{item.gst_registration_type}</td>
                                                     <td>{item.gstin}</td>
                                                     <td>{item.number}</td>
-                                                    <td>{item.payment_and_billing.oppning_balance}</td>
+                                                    <td>{item.payment_and_billing.oppning_balance}</td> */}
                                                     <td><Button>CREATE INVOICE</Button></td>
                                                     {/* <td>
                                 <select class="form-control" name="minner_Activity" value={item.minner_Activity}
@@ -622,7 +633,7 @@ const CustomerList = () => {
                                             </div>
                                         </div>
                                         <div class="row hh">
-                                            <div class="col-md-12 mb-4">
+                                            <div class="col-md-12 mb-4 panel-tabs-content">
                                                 <Tabs
                                                     class="nav nav-tabs"
                                                     id="controlled-tab-example"
@@ -683,13 +694,15 @@ const CustomerList = () => {
                                                     </Tab>
                                                     <Tab eventKey="notes" title="Notes">
                                                         <label>Notes</label>
-                                                        <div class="tab-pane" >
+                                                        <div class="tab-pane input-textarea" >
                                                             <textarea type="text" name="notes" value={notes} class="form-control" placeholder="2. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod  aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
                             dolor in reprehenderit in m.
                          "  onChange={(e) => onInputChange(e)}></textarea>
                                                         </div>
                                                     </Tab>
                                                     <Tab eventKey="Tax-Info" title="Tax Info">
+                                                    <div className="row">
+                                                        <div className="col-sm-6">
                                                         <div class="form-group col-sm-6 pd-0">
                                                             <label>Tax Rego. N.</label>
                                                             <input type="text" name="tax_rego_no" value={tax_rego_no} class="form-control" onChange={(e) => onInputChange(e)} />
@@ -702,12 +715,17 @@ const CustomerList = () => {
                                                             <label>PAN No.</label>
                                                             <input type="text" name="pan_no" value={pan_no} class="form-control" onChange={(e) => onInputChange(e)} />
                                                         </div>
-                                                        <div class="form-group checkbox-content">
+                                                        </div>
+                                                        <div className="col-sm-6">
+                                                        <div class="form-group checkbox-content1">
                                                             <input type="checkbox" id="html" defaultChecked={apply_tds_customer} name='apply_tds_customer' onChange={e => handleShowDropdown(e)} />
                                                             <label for="html">Apply TDS for this customer</label>
                                                         </div>
+                                                        </div>
+                                                        </div>
                                                     </Tab>
                                                     <Tab eventKey="Payment-and-Billing" title="Payment and Billing" >
+                                                        <div className="row">
                                                         <div class="md-6 col-sm-6">
                                                             <div class="form-group display">
                                                                 <label>Preferred payment method</label>
@@ -741,17 +759,18 @@ const CustomerList = () => {
                                                                 <label>Opening balance</label>
                                                                 <input type="text" name="oppning_balance" value={oppning_balance} class="form-control" onChange={(e) => onInputChange(e)} ></input>
                                                             </div>
-                                                        </div>
-                                                        <div class="md-6 col-sm-6 gst-bg">
-                                                            <div class="form-group">
+                                                     
+                                                            <div class="form-group display">
                                                                 <label>as of</label>
                                                                 <input type="date" name="as_of_date" value={as_of_date} class="form-control" onChange={(e) => onInputChange(e)} />
                                                             </div>
                                                         </div>
+                                                       
+                                                        </div>
                                                     </Tab>
                                                     <Tab eventKey="Attachments" title="Attachments" >
-                                                        <div className="md-6 col-sm-6 gst-bg"></div>
-                                                        <input type="file" name="doc" class="form-control" onChange={e => onSetFile(e)} ></input>
+                                                        <div className="md-6 col-sm-6"></div>
+                                                        <input type="file" name="doc" class="form-control attach" onChange={e => onSetFile(e)} ></input>
                                                     </Tab>
                                                 </Tabs>
                                             </div>
