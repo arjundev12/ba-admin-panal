@@ -37,6 +37,7 @@ const Login = (props) => {
       // toast("Get successfully");
       localStorage.setItem('Auth', true);
       localStorage.setItem('subadminid', res.data.data._id);
+      localStorage.setItem('state', res.data.data.state);
       localStorage.setItem('token', res.data.data.token);
       setTimeout(function(){history.push('/'); }, 500);
       setTimeout(function(){ localStorage.clear(); }, 1000 * 60 * 48);

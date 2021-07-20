@@ -18,6 +18,13 @@ const _nav =  [
     to: '/customerlist',
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
   },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Master/Product',
+    to: '/master-product',
+    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
+  },
+  
   // {
   //   _tag: 'CSidebarNavItem',
   //   name: 'Manage Price',

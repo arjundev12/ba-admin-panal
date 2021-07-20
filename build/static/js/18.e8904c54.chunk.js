@@ -1,2 +1,0 @@
-(this["webpackJsonp@coreui/coreui-free-react-admin-template"]=this["webpackJsonp@coreui/coreui-free-react-admin-template"]||[]).push([[18],{735:function(e,t,c){"use strict";c.r(t);var n=c(1),r=(c(628),c(626),c(40),c(655),c(650)),i=c(17),a=(Object(r.getStyle)("success"),Object(r.getStyle)("info"),Object(r.getStyle)("danger"),Object(n.lazy)((function(){return Promise.all([c.e(1),c.e(14)]).then(c.bind(null,790))})));t.default=function(){return Object(i.jsx)(i.Fragment,{children:Object(i.jsx)(a,{})})}}}]);
-//# sourceMappingURL=18.e8904c54.chunk.js.map
