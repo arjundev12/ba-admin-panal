@@ -14,12 +14,13 @@ const MasterProduct = () => {
         hsn_sac: "",
         discription: "",
         price: "",
-        tax: "",
+        tax: 0,
+        tax_type: ""
     });
     const options = {
         headers: { 'token': localStorage.getItem('token') }
     };
-    const { name, hsn_sac, discription, price, tax } = product;
+    const { name, hsn_sac, discription, price, tax,tax_type } = product;
     const onInputChange = e => {
         setProduct({ ...product, [e.target.name]: e.target.value });
     };
@@ -43,7 +44,8 @@ const MasterProduct = () => {
                 hsn_sac: "",
                 discription: "",
                 price: "",
-                tax: "",
+                tax: 0,
+                tax_type: ""
             });
         } else {
             toast("somthing went wrong");
@@ -84,9 +86,18 @@ const MasterProduct = () => {
                                         onChange={e => onInputChange(e)} />
                                 </div>
                                 <div class="form-group col-sm-6">
-                                    <label>Tax</label>
-                                    <input type="text" name="tax" class="form-control" placeholder="" value={tax}
+                                    <label>Tax in %</label>
+                                    <input type="number" pattern="[0-9]*" inputmode="numeric" name="tax" class="form-control" placeholder="" value={tax}
                                         onChange={e => onInputChange(e)} />
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label>Tax_type</label>
+                                    <select name="tax_type" id="fontType" class="form-control" onChange={e => onInputChange(e)}>
+                                                                                        <option value="Gst">GST</option>
+                                                                                        <option value="Igst" >IGST</option>
+                                                                                    </select>
+                                    {/* <input type="text" name="tax_type" class="form-control" placeholder="" value={tax_type}
+                                        onChange={e => onInputChange(e)} /> */}
                                 </div>
                                 <div class="form-group col-sm-6">
                                     <label>Discription</label>

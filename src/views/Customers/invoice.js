@@ -20,7 +20,7 @@ const InvoiceAdd = () => {
     const [endDate, setEndDate] = useState()
     useEffect(() => {
         loadData(id)
-    }, [tableRow, recurrForm])
+    }, [tableRow, recurrForm, formData1])
     const [textInfo, setTexInfo] = useState({
         tax_rego_no: "",
         cst_reg_no: "",
@@ -88,12 +88,12 @@ const InvoiceAdd = () => {
 
     const [customer, setCustomer] = useState([])
     const [product, setProduct] = useState([{ label: "Add Product", value: "Add Product" }])
-    const [taxInfo1Gst, setTaxInfo1Gst] = useState([{ label: "18% Gst", value: "18% Gst" },
-    { label: "6% Gst", value: "6% Gst" },
-    { label: "12% Gst", value: "12% Gst" }])
-    const [taxInfo1Igst, setTaxInfo1Igst] = useState([{ label: "18% Igst", value: "18% Igst" },
-    { label: "6% Igst", value: "6% Igst" },
-    { label: "12% Igst", value: "12% Igst" }])
+    const [taxInfo1Gst, setTaxInfo1Gst] = useState([{ label: "18% Gst", value: 18 },
+    { label: "6% Gst", value: 6 },
+    { label: "12% Gst", value: 12 }])
+    const [taxInfo1Igst, setTaxInfo1Igst] = useState([{ label: "18% Igst", value: 18 },
+    { label: "6% Igst", value: 6 },
+    { label: "12% Igst", value: 12 }])
     const loadData = async (id) => {
         let response0 = await axios.get(`${CONSTANT.baseUrl}/api/admin/get-customer?_id=${localStorage.getItem('subadminid')}`);
         console.log("responsedayaa", response0)
@@ -167,6 +167,9 @@ const InvoiceAdd = () => {
         if (e.target.name == 'amounts_are') {
             console.log('e.target.amounts_are', e.target.name, typeof e.target.value)
             setGstTaxAmount(e.target.value)
+            tableRow.map((item) =>{
+
+            })
         }
     }
     const onInputChange = async (e) => {
@@ -181,6 +184,7 @@ const InvoiceAdd = () => {
         }
         if (e.target.name == 'invoice_type') {
             setFormData1({ ...formData1, [e.target.name]: "recurring_invoice" })
+            window.scrollTo(0, 0);
         }
         if (e.target.name == 'invoice_number') {
             setFormData1({ ...formData1, [e.target.name]: e.target.value })
@@ -204,21 +208,21 @@ const InvoiceAdd = () => {
     const [formErrors, setFormErrors] = useState({});
     const { emailErr, invoice_number_error } = formErrors
     const checkInvoiceValidation = async (number) => {
-        console.log("checkInvoiceValidation",typeof number, number, (number === 0))
+        console.log("checkInvoiceValidation", typeof number, number, (number === 0))
         let formErrors = {};
         let formIsValid = true;
         if (number) {
-            console.log("checkInvoiceValidation",typeof number, number)
+            console.log("checkInvoiceValidation", typeof number, number)
             var mobPattern = new RegExp(/^[0-9]{4,4}$/i);
-            console.log("invoice_no", mobPattern.test(number) , number)
+            console.log("invoice_no", mobPattern.test(number), number)
             if (!mobPattern.test(number)) {
                 formIsValid = false;
                 formErrors["invoice_number_error"] = "Please enter valid1111 number ";
             }
-            let invoice_no = await axios.post(`${CONSTANT.baseUrl}/api/admin/check-invoice-no`,{invoice_number:number});
+            let invoice_no = await axios.post(`${CONSTANT.baseUrl}/api/admin/check-invoice-no`, { invoice_number: number });
             console.log("invoice_no", invoice_no)
             if (invoice_no.data.code == 400) {
-                 console.log("invoice_no", invoice_no.data)
+                console.log("invoice_no", invoice_no.data)
                 formIsValid = false;
                 formErrors["invoice_number_error"] = "this number is already exist";
             }
@@ -228,7 +232,7 @@ const InvoiceAdd = () => {
             // }
 
         }
-        
+
         setFormErrors(formErrors);
         console.log("hiiiiiiiiiiiiiiii", formErrors, formIsValid)
         return formIsValid;
@@ -293,8 +297,10 @@ const InvoiceAdd = () => {
         description: "",
         qty: "",
         rate: "",
-        amount: 0,
-        tax: ""
+        amount: "",
+        subtotal: "",
+        tax: "",
+        tax_type: ""
     }
     // const {service_date,product_service,description,qty,rate,amount,tax}=rowInput
     const [tableRow, setTableRow] = useState([{ ...rowInput }]);
@@ -309,28 +315,78 @@ const InvoiceAdd = () => {
             } else {
                 tableRow[i]['product_service'] = e.value.name
                 tableRow[i]['description'] = e.value.discription
-                tableRow[i]['amount'] = e.value.price
-                tableRow[i]['tax'] = e.value.tax
+                let taxAmount = Number(e.value.price) * (Number(e.value.tax) / 100)
+                tableRow[i]['amount'] = e.value.price + taxAmount
+                tableRow[i]['subtotal'] = Number(e.value.price)
+                tableRow[i]['tax'] = Number(e.value.tax)
+                tableRow[i]['qty'] = 1
+                tableRow[i]['tax_type'] = e.value.tax_type
+                // tableRow[i]['rate'] = 1
                 // tableRow[i]['description'] = e.value.name
             }
         } else if (type == 'tax') {
-            tableRow[i]['tax'] = e.value.name
+            console.log("type", type, e.label)
+
+            if(tableRow[i].amount ==""){
+                tableRow[i]['tax'] = e.value
+                let amount = Number(tableRow[i].qty) * Number(tableRow[i].rate)
+                tableRow[i]['subtotal'] = amount
+                let taxAmount = amount * (e.value / 100)
+                tableRow[i].amount = taxAmount + amount
+                if (e.label == '6% Gst' || e.label == '12% Gst' || e.label == '18% Gst') {
+                    tableRow[i].tax_type = "Gst"
+                } else {
+                    tableRow[i].tax_type = "Igst"
+                }
+            }else{
+                tableRow[i]['tax'] = e.value
+                let amount = tableRow[i].amount
+                tableRow[i]['subtotal'] = amount
+                let taxAmount = amount * (e.value / 100)
+                tableRow[i].amount = taxAmount + amount
+                if (e.label == '6% Gst' || e.label == '12% Gst' || e.label == '18% Gst') {
+                    tableRow[i].tax_type = "Gst"
+                } else {
+                    tableRow[i].tax_type = "Igst"
+                }
+            }
+           
         } else {
             if ('amount' == e.target.name) {
-                tableRow[i][e.target.name] = Number(e.target.value)
-            } else {
-                tableRow[i][e.target.name] = e.target.value
+            //     console.log( "amount",e.target.name , typeof e.target.name)
+                console.log( "amounttttttttt",e.target.value ,tableRow[i].tax, typeof e.target.value)
+                console.log("totala", Number(e.target.value) *(tableRow[i].tax /100))
+
+            //    let amount = Number(e.target.value) *(tableRow[i].tax /100)
+                tableRow[i]['amount'] =   Number(e.target.value) +Number(e.target.value) *(tableRow[i].tax /100)
+                tableRow[i]['subtotal'] = Number(e.target.value)
             }
+            if ('rate' == e.target.name) {
+                let amount = Number(e.target.value) * Number(tableRow[i].qty)
+                tableRow[i]['subtotal'] = amount
+                let taxAmount = amount * (tableRow[i].tax / 100)
+                tableRow[i]['amount'] = amount + taxAmount
+                tableRow[i][e.target.name] = Number(e.target.value)
+            }
+            if ('qty' == e.target.name) {
+                console.log("qtyqtyqty", e.target.name, typeof e.target.value, e.target.value, tableRow[i])
+                let amount = Number(e.target.value) * Number(tableRow[i].rate)
+                tableRow[i]['subtotal'] = amount
+                let taxAmount = amount * (tableRow[i].tax / 100)
+                tableRow[i]['amount'] = amount + taxAmount
+                tableRow[i][e.target.name] = Number(e.target.value)
+            }
+            // else {
+            //     tableRow[i][e.target.name] = e.target.value
+            // }
 
         }
         let calculatSum = await tableRow.reduce((accumulator, current) => accumulator + current.amount, 0)
-        console.log("tableRow", tableRow)
-
+        let calculatSubTotal = await tableRow.reduce((accumulator, current) => accumulator + current.subtotal, 0)
+        formData1.subtotal = calculatSubTotal
+        // formData1.total = calculatSum
         await setFormData1({ ...formData1, total: calculatSum })
-
-        //   await  setFormData1({...formData1, subtotal: calculatSum})
-        //   await  setFormData1({...formData1, balance_due: calculatSum})
-
+        console.log("tableRow", tableRow)
     }
     const addLineHandler = () => {
         console.log("AddLine Handler called")
@@ -757,11 +813,11 @@ const InvoiceAdd = () => {
                                                 onChange={e => onInputChangeTable(e, i, "product_service")} /></td>
                                             <td>{""}</td>
                                             <td><input type='text' name='description' value={item.description} onChange={(e) => onInputChangeTable(e, i, "")} /></td>
-                                            {gstTaxAmount == 'true' ? <td> <Select className="basic-single" value={item.tax} options={localStorage.getItem('state') == b_state ? taxInfo1Gst : taxInfo1Igst}
+                                            {gstTaxAmount == 'true' ? <td> <Select className="basic-single" options={localStorage.getItem('state') == b_state ? taxInfo1Gst : taxInfo1Igst}
                                                 onChange={e => onInputChangeTable(e, i, "tax")} /> </td> : ""}
-                                            <td><input type="number" name='qty' pattern="[0-9]*" inputmode="numeric" onChange={(e) => onInputChangeTable(e, i, "")} /> </td>
-                                            <td><input type="number" name='rate' pattern="[0-9]*" inputmode="numeric" onChange={(e) => onInputChangeTable(e, i, "")} /></td>
-                                            <td><input type="number" name='amount' pattern="[0-9]*" inputmode="numeric" value={item.amount} onChange={(e) => onInputChangeTable(e, i, "")} /> </td>
+                                            <td><input type="number" name='qty' pattern="[0-9]*" inputmode="numeric" value={item.qty} onChange={(e) => onInputChangeTable(e, i, "")} /> </td>
+                                            <td><input type="number" name='rate' pattern="[0-9]*" inputmode="numeric" value={item.rate} onChange={(e) => onInputChangeTable(e, i, "")} /></td>
+                                            <td><input type="number" name='amount'  value={item.subtotal} onChange={(e) => onInputChangeTable(e, i, "")} /> </td>
                                             {/* <td>button</td> */}
                                         </tr>)}
 
@@ -808,7 +864,19 @@ const InvoiceAdd = () => {
                                 </div>
                                 <div class="col-md-6 col-sm-6">
                                     <div class="invoice-right">
-                                        <p>Subtotal<span class="amount-invoice"> ₹{total}</span></p>
+                                        <p>Subtotal<span class="amount-invoice"> ₹{subtotal}</span></p>
+                                        {
+                                            tableRow.map((item) => <div>
+                                                {item.tax_type == 'Gst' ? <div>
+                                                    <p>CGST {(item.tax / 2)} % on {item.subtotal}<span class="amount-invoice1"> ₹{((total - subtotal) / 2).toFixed(2)}</span></p>
+                                                    <p>SGST {(item.tax / 2)} % on {item.subtotal}<span class="amount-invoice1"> ₹{((total - subtotal) / 2).toFixed(2)}</span></p>
+                                                </div> : item.tax_type == 'Igst' ?
+                                                    <p>IGST {(item.tax)} % on {item.subtotal}<span class="amount-invoice1"> ₹{(total - subtotal)}</span></p> : ""
+                                                }
+                                            </div>
+
+                                            )
+                                        }
                                         <p>Total<span class="amount-invoice1"> ₹{total}</span></p>
                                         <p>Balance Due<span> ₹{total}</span></p>
                                     </div>

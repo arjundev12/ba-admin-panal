@@ -99,7 +99,15 @@ const CustomerDetails = () => {
     const { preferred_payment_method, preferred_delivery_method, term, oppning_balance, as_of_date, is_sub_customer, name, first_name, middle_name, last_name, suffix, company_name, display_name, gst_registration_type
         , gstin_no, email, number, mobile_no, fax, other, website, Shipping_Address_copy, notes, } = formData
     const { tax_rego_no, cst_reg_no, pan_no, apply_tds_customer } = textInfo
+    const [invoiceList, setInvoiceList] = useState([])
     const loadData = async (id) => {
+        let reqdata = {_id : id}
+        let response0 = await axios.post(`${CONSTANT.baseUrl}/api/admin/get-invoice-list`,reqdata);
+        console.log("response0",response0.data.data)
+        if(response0.data.code == 200){
+            setInvoiceList(response0.data.data.docs)
+        }
+
 
         let response = await axios.get(`${CONSTANT.baseUrl}/api/admin/customer-details/${id}`);
         console.log(response.data.data.tax_info)
@@ -362,7 +370,6 @@ const CustomerDetails = () => {
     return (
         <>
             {/* <!DOCTYPE html> */}
-            {console.log("i am in here")}
             <html lang="en">
 
                 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
@@ -504,22 +511,24 @@ const CustomerDetails = () => {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {/* <!--1--> */}
-                                                        <tr>
-                                                            <td><input type="checkbox" value="" /></td>
-                                                            <td ><a href="#"></a></td>
-                                                            <td ></td>
-                                                            <td ></td>
-                                                            <td ></td>
-                                                            <td ></td>
-                                                            <td ></td>
+                                                        {invoiceList.map((item, i) => <tr><td><input type="checkbox" value="" /></td>
+                                                            {/* <td >{i + 1}</td> */}
+                                                            <td ><a > {item.invoice_date}</a></td>
+                                                            <td ><a >{item.type1}</a></td>
+                                                            <td ><a > {item.invoice_number}</a></td>
+                                                            <td ><a > {item.statement_message}</a></td>
+                                                            <td ><a > {item.due_date}</a></td>
 
-                                                            <td ></td>
-                                                            <td ></td>
-                                                            <td ></td>
-                                                            <td ></td>
-                                                            <td > <i class="fa fa-angle-down"></i></td>
-                                                        </tr>
+                                                            <td ><a > {item.total}</a></td>
+                                                            <td ><a > {item.subtotal}</a></td>
+                                                            <td ><a>{item.products_meta[0].tax}</a></td>
+                                                            <td ><a > {item.total}</a></td>
+                                                            <td ><a > {item.status}</a></td>
+                                                            <td > <i class="fa fa-angle-down"></i></td></tr>)
+                                                        }
+                                                        {/* <tr>
+                                                            
+                                                        </tr> */}
 
 
                                                     </tbody>
