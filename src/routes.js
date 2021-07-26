@@ -28,7 +28,8 @@ const Customerlist = React.lazy(() => import('./views/Customers/customerlist'));
 const CustomerDetails = React.lazy(() => import('./views/Customers/customerDetails'));
 const InvoiceAdd = React.lazy(() => import('./views/Customers/invoice'));
 const MasterProduct = React.lazy(() => import('./views/Customers/masters'));
-// const AddUsers = React.lazy(() => import('./views/users/addUser'));
+const DocumentsList = React.lazy(() => import('./views/Customers/documents'));
+const AddFolder = React.lazy(() => import('./views/Customers/addfolder'));
 
 const routes = [
 
@@ -41,9 +42,9 @@ const routes = [
   { path: '/add/invoice/:id', exact: true, name: 'invoice', component: InvoiceAdd },
 
   { path: '/master-product', exact: true, name: 'MasterProduct', component: MasterProduct },
-  // { path: '/add/subcategory', exact: true, name: 'Add Sub Category', component: AddSubcategories },
+  { path: '/documents', exact: true, name: 'documents', component: DocumentsList },
 
-  // { path: '/chapters', exact: true, name: 'Chapters', component: getChapters },
+  { path: '/add/folder/:id', exact: true, name: 'AddFolder', component: AddFolder },
   // { path: '/add/chapter', exact: true, name: 'Add Chapter', component: AddChapter },
 
   // { path: '/questions', exact: true, name: 'questions', component: GetQuestions },

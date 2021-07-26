@@ -24,7 +24,12 @@ const _nav =  [
     to: '/master-product',
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
   },
-  
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Documents',
+    to: '/documents',
+    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
+  },
   // {
   //   _tag: 'CSidebarNavItem',
   //   name: 'Manage Price',

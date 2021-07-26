@@ -107,6 +107,12 @@ const InvoiceAdd = () => {
             toast("Add successfully");
             setFormData1({ ...formData1, invoice_number: invoice_no.data.data })
         }
+        let order_no = await axios.get(`${CONSTANT.baseUrl}/api/admin/get-order-no`);
+        console.log("invoice_no", order_no)
+        if (order_no.data.code == 200) {
+            toast("Add successfully");
+            setOrderForm({ ...orderForm, order_no: order_no.data.data })
+        }
         let response1 = await axios.get(`${CONSTANT.baseUrl}/api/admin/get-product-service?_id=${localStorage.getItem('subadminid')}`);
         console.log("product", response1)
         if (response1.data.code == 200) {
@@ -167,9 +173,6 @@ const InvoiceAdd = () => {
         if (e.target.name == 'amounts_are') {
             console.log('e.target.amounts_are', e.target.name, typeof e.target.value)
             setGstTaxAmount(e.target.value)
-            tableRow.map((item) =>{
-
-            })
         }
     }
     const onInputChange = async (e) => {
@@ -398,19 +401,54 @@ const InvoiceAdd = () => {
     ////////////////////////////////////////////////add orders  //////////////////////////////////////
 
     const [addOrders, setAddOrders] = useState(false)
+    const [orderForm, setOrderForm] = useState({
+        order_no: "",
+        client_po_no: "",
+        description: "",
+        t_order_value: "",
+        order_startdate : "",
+        order_enddate: ""
+    })
+    const {order_no, client_po_no, discription, t_order_value, order_startdate, order_enddate} = orderForm
     const paymentInput = {
-        term: ""
+        payment_term: ""
     }
     const [paymentTerm, setPaymentTerm] = useState([{ ...paymentInput }])
+    const onInputchangeOrder = async (e, i) => {
+        // e.preventDefault();
+        console.log("eqqqqqqqqqqqqqqq",e.target.value, e.target.name , i)
+        if ('payment_term' == e.target.name) {
+            paymentTerm[i]['payment_term'] = e.target.value
+        }else {
+            setOrderForm({...orderForm , [e.target.name]:e.target.value })
+        }
+    }
+    const orderSubmit = async (e) => {
+        e.preventDefault();
+        console.log("orderSubmitorderSubmit",orderForm, paymentTerm)
+        orderForm.payment_term = paymentTerm
+        orderForm.created_by = localStorage.getItem('subadminid')
+        console.log("daaaaaaa", orderForm)
+        let response = await axios.post(`${CONSTANT.baseUrl}/api/admin/create-order`, orderForm);
+        console.log("response", response)
+        if (response.data.code == 200) {
+            toast("create successfully");
+            setTimeout(function () { setAddOrders(false) }, 3000);
+        }
+    }
     const addTermHandler = (e) => {
+        e.preventDefault();
         setPaymentTerm([...paymentTerm, { ...paymentInput }])
+        console.log("paymentTerm", paymentTerm)
     }
     const clearTermAllLine = (e) => {
+        e.preventDefault();
         setPaymentTerm([paymentInput])
     }
     const opneAddorderModal = async (e) => {
         e.target.value == 'false' ? await setAddOrders(false) : await setAddOrders(true)
     }
+   
     //////////////////////////////////////////recurring///////////////////////////////////////////////////////////////////// 
 
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -934,40 +972,55 @@ const InvoiceAdd = () => {
                                         <Row className="mb-3">
                                             <Form.Group as={Col} controlId="formGridEmail">
                                                 <Form.Label>Order No *</Form.Label>
-                                                <Form.Control type="text" placeholder="Order No" />
+                                                {/* <input type="text" placeholder="Order No"></input> */}
+                                                <Form.Control type ='number'pattern="[0-9]*" inputmode="numeric" name="order_no" placeholder="Order No" value={order_no} onChange = {e=>onInputchangeOrder(e)} />
                                             </Form.Group>
 
                                             <Form.Group as={Col} controlId="formGridPassword">
-                                                <Form.Label>Client PO Number</Form.Label>
-                                                <Form.Control type="text" placeholder="Client PO Number" />
+                                                <Form.Label>Client PO Number (if any)</Form.Label>
+                                                {/* <input  type="text" placeholder="Client PO Number" ></input> */}
+                                                <Form.Control type ='number'pattern="[0-9]*" inputmode="numeric" placeholder="Client PO Number" name="client_po_no" onChange = {e=>onInputchangeOrder(e)}/>
                                             </Form.Group>
                                         </Row>
                                         <Form.Group className="mb-3" controlId="formGridAddress2">
                                             <Form.Label> Descritpion</Form.Label>
-                                            <Form.Control placeholder="Descritpion" />
+                                            {/* <input  type="text" placeholder="Client PO Number" ></input> */}
+                                            <Form.Control placeholder="Descritpion" name="description" onChange = {e=>onInputchangeOrder(e)} />
                                         </Form.Group>
+
+                                        <Form.Group>
+                                        <div class="form-group col-sm-3 cust-width2">
+                                                        <label for="">Start Date</label>
+                                                        <input type="date" name="order_startdate" value={order_startdate} onChange={e => onInputchangeOrder(e)} />
+                                                    </div>
+                                                    <div class="form-group col-sm-3 cust-width2">
+                                                        <label for="">End Date</label>
+                                                        <input type="date" name="order_enddate" value={order_enddate} onChange={e => onInputchangeOrder(e)} />
+                                                    </div>
+                                                    </Form.Group>
                                         <Form.Group className="mb-3" controlId="formGridAddress1">
                                             <Form.Label>Total order value with gst</Form.Label>
-                                            <Form.Control placeholder="Total order value with gst" />
+                                            {/* <input  type="text" placeholder="Client PO Number" ></input> */}
+                                            <Form.Control type ='number' pattern="[0-9]*" inputmode="numeric" placeholder="Total order value with gst" name="t_order_value" onChange = {e=>onInputchangeOrder(e)}  />
                                         </Form.Group>
 
                                         <Form.Group className="mb-3" controlId="formGridAddress2">
                                             <Form.Label>Payment Terms</Form.Label>
-                                            {paymentTerm.map((item) => <div id="formGridCheckbox" class="mb-3 form-group">
+                                            {paymentTerm && paymentTerm.map((item, i) => <div id="formGridCheckbox" class="mb-3 form-group">
                                                 <div class="form-check">
-                                                    <input type="text" class="form-check-input" placeholder="Add Term" />
+                                                    <input type="text" class="form-check-input" name = "payment_term" placeholder="Add Term" onChange = {e=>onInputchangeOrder(e, i)} />
                                                 </div>
                                             </div>)}
                                         </Form.Group>
-                                        <button variant="primary" onClick={e => addTermHandler(e)}>Add Term</button>
-                                        <button variant="secondary" onClick={e => clearTermAllLine(e)}>clear Term</button>
+                                        <button variant="primary" onClick={(e) => addTermHandler(e)} >Add Term</button>
+                                        <button variant="secondary" onClick={(e) => clearTermAllLine(e)}>clear Term</button>
                                     </Form> </div>
                             </div>
                         </div>
                         <div class='footer-side'>
                             <Modal.Footer>
-                                <Button variant="secondary" name='newCustomer' onClick={opneAddorderModal}> Close </Button>
-                                <Button variant="primary" onClick={e => onSubmit(e)}> Submit</Button>
+                                <Button variant="secondary" name='newCustomer'  value={false}  onClick={opneAddorderModal}> Close </Button>
+                                <Button variant="primary" onClick={e => orderSubmit(e)}> Submit</Button>
                             </Modal.Footer>
                         </div>
 
