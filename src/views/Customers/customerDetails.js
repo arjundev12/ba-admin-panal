@@ -145,17 +145,21 @@ const CustomerDetails = () => {
     }
 
     const onInputChangeD = async (e) => {
-        console.log("enchor tag data , ", e.target.name)
+        console.log("enchor tag data , ", e )
         let filter = {}
-        if (e.target.name == 'option-1') {
-            setOptions({ ...options, newCustomer: true })
+        if (e == 'invoice') {
+            history.push(`/add/invoice/${id}`)
+            // setOptions({ ...options, newCustomer: true })
         }
-        if (e == 'option-1') {
-            setOptions({ ...options, newCustomer: true })
-        }
-        if (e == 'option-2') {
-            setOptions({ ...options, invoice: true })
-        }
+        // if (e.target.name == 'option-1') {
+        //     setOptions({ ...options, newCustomer: true })
+        // }
+        // if (e == 'option-1') {
+        //     setOptions({ ...options, newCustomer: true })
+        // }
+        // if (e == 'option-2') {
+        //     setOptions({ ...options, invoice: true })
+        // }
 
     };
 
@@ -446,14 +450,14 @@ const CustomerDetails = () => {
                                                 title="New Transaction"
                                                 id="dropdown-menu-align-right"
                                                 onSelect={e => onInputChangeD(e)}>
-                                                <Dropdown.Item value="invoice">Invoice</Dropdown.Item>
-                                                <Dropdown.Item value="payment">Payment</Dropdown.Item>
-                                                <Dropdown.Item value="estimate">Estimate</Dropdown.Item>
-                                                <Dropdown.Item value="sales-receipt">Sales Receipt</Dropdown.Item>
-                                                <Dropdown.Item value="credit-note">Credit Note</Dropdown.Item>
-                                                <Dropdown.Item value="delayed charge">Delayed Charge</Dropdown.Item>
-                                                <Dropdown.Item value="time-activity">Time Activity</Dropdown.Item>
-                                                <Dropdown.Item value="customer-statement">Customer Statement</Dropdown.Item>
+                                                <Dropdown.Item eventKey="invoice"> Create Invoice</Dropdown.Item>
+                                                <Dropdown.Item eventKey="payment">Payment</Dropdown.Item>
+                                                <Dropdown.Item eventKey="estimate">Estimate</Dropdown.Item>
+                                                <Dropdown.Item eventKey="sales-receipt">Sales Receipt</Dropdown.Item>
+                                                <Dropdown.Item eventKey="credit-note">Credit Note</Dropdown.Item>
+                                                <Dropdown.Item eventKey="delayed charge">Delayed Charge</Dropdown.Item>
+                                                <Dropdown.Item eventKey="time-activity">Time Activity</Dropdown.Item>
+                                                <Dropdown.Item eventKey="customer-statement">Customer Statement</Dropdown.Item>
                                             </DropdownButton>
                                             {/* <a href="#" class="add-project" data-toggle="modal" data-target="#add_project"><select name="fontType" id="fontType" class="form-control">
                 <option value=""  onClick={e => handleShowDropdown(e)}>New Customer</option>
