@@ -145,7 +145,6 @@ const DocumentsList = () => {
                                                     <td><a href={`#/add/folder/${item._id}`}> {item.company.company_name}</a></td>
                                                     <td><a href={`#/add/folder/${item._id}`}> {item.number}</a></td>
                                                     <td><Link to={`/add/folder/${item._id}`}>CREATE FOLDER</Link></td>
-                                                
                                                 </tr>)
                                             }
                                         </tbody>

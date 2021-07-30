@@ -9720,7 +9720,13 @@ i.fa.fa-phone {
     width: 200px;
     transition: all 0.5s ease-in-out;
 }
-
+.folder1 {
+  background: #B6BAC1;
+  padding: 12px 10px;
+  width: 200px;
+  transition: relative;
+  margin-right: auto;
+}
 .card2 {
     background: #FFC107;
     padding: 12px 10px;
