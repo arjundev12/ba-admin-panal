@@ -27,6 +27,8 @@ const Users = React.lazy(() => import('./views/users/Users'));
 const Customerlist = React.lazy(() => import('./views/Customers/customerlist'));
 const CustomerDetails = React.lazy(() => import('./views/Customers/customerDetails'));
 const InvoiceAdd = React.lazy(() => import('./views/Customers/invoice'));
+const InvoiceRecieve = React.lazy(() => import('./views/Customers/recieveinvoice'));
+
 const MasterProduct = React.lazy(() => import('./views/Customers/masters'));
 const DocumentsList = React.lazy(() => import('./views/Customers/documents'));
 const AddFolder = React.lazy(() => import('./views/Customers/addfolder'));
@@ -40,6 +42,7 @@ const routes = [
 
   { path: '/customer-details/:id', exact: true, name: 'CustomerDetails', component: CustomerDetails },
   { path: '/add/invoice/:id', exact: true, name: 'invoice', component: InvoiceAdd },
+  { path: '/recieve/invoice/:id', exact: true, name: 'recieve invoice', component: InvoiceRecieve },
 
   { path: '/master-product', exact: true, name: 'MasterProduct', component: MasterProduct },
   { path: '/documents', exact: true, name: 'documents', component: DocumentsList },

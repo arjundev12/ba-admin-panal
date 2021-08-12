@@ -12,7 +12,7 @@ import moment from "moment";
 import { Button, Row, Col, Form, Table, DropdownButton, Dropdown, Modal, Tabs, Tab, Sonnet } from 'react-bootstrap'
 import { types } from "@babel/core";
 
-const InvoiceAdd = () => {
+const InvoiceRecieve = () => {
     const { id } = useParams();
     let history = useHistory();
     var someDate = new Date();
@@ -102,7 +102,7 @@ const InvoiceAdd = () => {
         if (response0.data.code == 200) {
             toast("Add successfully");
             setCustomer(response0.data.data)
-            
+
         }
         let orderList = await axios.get(`${CONSTANT.baseUrl}/api/admin/get-order-list?_id=${id}`);
         console.log("orderlist", orderList.data.data)
@@ -158,8 +158,8 @@ const InvoiceAdd = () => {
             await setStartDate(moment().format("YYYY-MM-DD"))
             // let nedate =moment(startDate).add(5, 'days')
             await setEndDate(moment().format("YYYY-MM-DD"))
-        } 
-        
+        }
+
 
         // console.log("customercustomercustomer", customer, invoice_number)
     }
@@ -189,7 +189,7 @@ const InvoiceAdd = () => {
     const onInputChange = async (e) => {
         // console.log("formData", formData)
         // console.log("targat", e.target.name, e.target.value)
-        
+
         if (e.target.name == 'startDate') {
             console.log("e.target.name", e.target.value)
             setStartDate(e.target.value)
@@ -342,14 +342,14 @@ const InvoiceAdd = () => {
                 tableRow[i]['subtotal'] = Number(e.value.price)
                 tableRow[i]['tax'] = Number(e.value.tax)
                 tableRow[i]['qty'] = 1
-                tableRow[i]['tax_type'] = localStorage.getItem('state') == b_state ? 'Gst':'Igst'
+                tableRow[i]['tax_type'] = localStorage.getItem('state') == b_state ? 'Gst' : 'Igst'
                 // tableRow[i]['rate'] = 1
                 // tableRow[i]['description'] = e.value.name
             }
         } else if (type == 'tax') {
             // console.log("type", type, e.label)
 
-            if(tableRow[i].amount ==""){
+            if (tableRow[i].amount == "") {
                 tableRow[i]['tax'] = e.value
                 let amount = Number(tableRow[i].qty) * Number(tableRow[i].rate)
                 tableRow[i]['subtotal'] = amount
@@ -358,10 +358,10 @@ const InvoiceAdd = () => {
                 // if (e.label == '6% Gst' || e.label == '12% Gst' || e.label == '18% Gst') {
                 //     tableRow[i].tax_type = "Gst"
                 // } else {
-                    
+
                 // }
-                tableRow[i].tax_type = localStorage.getItem('state') == b_state ? 'Gst':'Igst'
-            }else{
+                tableRow[i].tax_type = localStorage.getItem('state') == b_state ? 'Gst' : 'Igst'
+            } else {
                 tableRow[i]['tax'] = e.value
                 let amount = tableRow[i].amount
                 tableRow[i]['subtotal'] = amount
@@ -372,17 +372,17 @@ const InvoiceAdd = () => {
                 // } else {
                 //     tableRow[i].tax_type = "Igst"
                 // }
-                tableRow[i].tax_type = localStorage.getItem('state') == b_state ? 'Gst':'Igst'
+                tableRow[i].tax_type = localStorage.getItem('state') == b_state ? 'Gst' : 'Igst'
             }
-           
+
         } else {
             if ('amount' == e.target.name) {
-                console.log( "amount",e.target.name , typeof e.target.name)
+                console.log("amount", e.target.name, typeof e.target.name)
                 // console.log( "amounttttttttt",e.target.value ,tableRow[i].tax, typeof e.target.value)
                 // console.log("totala", Number(e.target.value) *(tableRow[i].tax /100))
 
-            //    let amount = Number(e.target.value) *(tableRow[i].tax /100)
-                tableRow[i]['amount'] =   Number(e.target.value) +Number(e.target.value) *(tableRow[i].tax /100)
+                //    let amount = Number(e.target.value) *(tableRow[i].tax /100)
+                tableRow[i]['amount'] = Number(e.target.value) + Number(e.target.value) * (tableRow[i].tax / 100)
                 tableRow[i]['subtotal'] = Number(e.target.value)
             }
             if ('rate' == e.target.name) {
@@ -427,10 +427,10 @@ const InvoiceAdd = () => {
         client_po_no: "",
         description: "",
         t_order_value: "",
-        order_startdate : "",
+        order_startdate: "",
         order_enddate: ""
     })
-    const {order_no, client_po_no, discription, t_order_value, order_startdate, order_enddate} = orderForm
+    const { order_no, client_po_no, discription, t_order_value, order_startdate, order_enddate } = orderForm
     const paymentInput = {
         payment_term: ""
     }
@@ -440,26 +440,26 @@ const InvoiceAdd = () => {
         // console.log("eqqqqqqqqqqqqqqq",e.target.value, e.target.name , i)
         if ('payment_term' == e.target.name) {
             paymentTerm[i]['payment_term'] = e.target.value
-        }else {
-            setOrderForm({...orderForm , [e.target.name]:e.target.value })
+        } else {
+            setOrderForm({ ...orderForm, [e.target.name]: e.target.value })
         }
     }
-    const [term1 , setTerm1] = useState([])
+    const [term1, setTerm1] = useState([])
     const onInputChangeorder = async (e) => {
         console.log("onInputChangeOrder", e, e.value)
-     if (e.value == 'Add Order') {
-        opneAddorderModal("", "Add_Order")
-     }else{
-         let array1 =[]
-         if (e.value.payment_term){
-             for (const iterator of e.value.payment_term) {
-                array1.push({ label: iterator.payment_term, value: iterator})
-             }
-        setTerm1(array1)
-         }
-        setEndDate(e.value.order_enddate)
-        setStartDate(e.value.order_startdate)
-     }
+        if (e.value == 'Add Order') {
+            opneAddorderModal("", "Add_Order")
+        } else {
+            let array1 = []
+            if (e.value.payment_term) {
+                for (const iterator of e.value.payment_term) {
+                    array1.push({ label: iterator.payment_term, value: iterator })
+                }
+                setTerm1(array1)
+            }
+            setEndDate(e.value.order_enddate)
+            setStartDate(e.value.order_startdate)
+        }
     }
     const orderSubmit = async (e) => {
         e.preventDefault();
@@ -485,13 +485,13 @@ const InvoiceAdd = () => {
         setPaymentTerm([paymentInput])
     }
     const opneAddorderModal = async (e, type) => {
-        if(type=="Add_Order"){
+        if (type == "Add_Order") {
             await setAddOrders(true)
-        }else{
+        } else {
             e.target.value == 'false' ? await setAddOrders(false) : await setAddOrders(true)
         }
     }
-   
+
     //////////////////////////////////////////recurring///////////////////////////////////////////////////////////////////// 
 
     var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -575,7 +575,7 @@ const InvoiceAdd = () => {
                             <div class="row">
                                 <div class="col-md-4 col-sm-4">
                                     <div class="left-portion">
-                                        <h2><img src="img/wall-clock.png" /> Invoice</h2>
+                                        <h2><img src="img/wall-clock.png" /> Invoice Recieve</h2>
                                     </div>
                                 </div>
                                 <div class="col-md-8 col-sm-8">
@@ -588,33 +588,7 @@ const InvoiceAdd = () => {
                                         <div id="mySidenav1" class="sidenav1">
                                             <a href="javascript:void(0)" class="Close" onclick="closeNav()">&times;</a>
                                             <h2 class="cust-invoice">Add to Invoice</h2>
-                                            <form class="cust-form">
-                                                <div class="row">
-                                                    <div class="form-group col-sm-12 cust-width3">
-                                                        <label>Customerll <i class="fa fa-question-circle-o"></i></label>
-                                                        <select class="form-control">
-                                                            <option>Select a Customer</option>
-                                                            <option>A</option>
-                                                            <option>B</option>
-                                                            <option>C</option>
-                                                        </select>
-                                                    </div>
 
-                                                    <a class="add-all" href="#">Add all</a>
-                                                    <div class="box-card">
-                                                        <h3>Estimate #1045</h3>
-                                                        <p>Nov 27, 2020</p>
-                                                        <h3>₹4,36,600.00 | Taxable</h3>
-                                                        <ul>
-                                                            <li>More App & Software...</li>
-                                                            <li>Software Development a...</li>
-                                                        </ul>
-                                                        <a class="more" href="#">More</a>
-                                                        <a class="add-btn" href="#">add</a>
-                                                        <a class="open-btn" href="#">open</a>
-                                                    </div>
-                                                </div>
-                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -631,12 +605,6 @@ const InvoiceAdd = () => {
                                                 <div class="form-group col-sm-4 cust-width">
                                                     <label>Customer  </label>
                                                     <p><a href="#" data-tooltip="Select a Custom to Make SUre The Right Person Pays You On Time"><i class="fa fa-question-circle-o"></i></a></p>
-                                                    {/* <!--  <div class="tool-box">
-                              <div class="tooltips">
-                                 <h2>Select a Customer to Make Sure The Right
-                                      Person Pays You On Time</h2>
-                              </div>
-                           </div> --> */}
                                                     <select class="form-control" name="customer_id"
                                                         onChange={e => onInputChange(e)} >
                                                         {customer.map(item => (
@@ -658,148 +626,21 @@ const InvoiceAdd = () => {
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-sm-4">
-                                                    <a href="#">Setup now</a>
+                                                    <a href="#">find By Ivoice</a>
                                                     <div class="form-group">
-                                                        <input type="checkbox" id="html" />
-                                                        <label for="html">razorpay </label>
+                                                        <input type="text" placeholder="find invoice here" />
                                                     </div>
+
                                                 </div>
+                                                
+
                                             </div>
-                                            {invoice_type == 'recurring_invoice' ? <div class="row">
-                                                <div class="form-group col-sm-4">
-                                                    <label>Interval </label>
-                                                    <select class="form-control" name='interval_time' value={interval_time} onChange={e => onInputChangeInterval(e)}>
-                                                        <option value='Daily'>Daily</option>
-                                                        <option value='Weekly'>Weekly</option>
-                                                        <option value='Monthly'>Monthly</option>
-                                                        <option value='Yearly'>Yearly</option>
-                                                    </select>
-                                                    {interval_time == 'Daily' ?
-                                                        <label>  Every <input type="number" name='every_day' pattern="[0-9]*" inputmode="numeric" onChange={e => onInputChangeInterval(e)} /> day(s)</label>
-                                                        : interval_time == 'Weekly' ?
-                                                            <div> <label>  Every <input type="number" name='every_week' pattern="[0-9]*" inputmode="numeric" onChange={e => onInputChangeInterval(e)} /> week(s) on</label>
-
-                                                                <div >
-                                                                    <select class="form-control" name='day_name' onChange={e => onInputChangeInterval(e)}>
-                                                                        <option value='Sunday'>Sunday</option>
-                                                                        <option value='Monday'>Monday</option>
-                                                                        <option value='Tuesday'>Tuesday</option>
-                                                                        <option value='Wednesday'>Wednesday</option>
-                                                                        <option value='Thursday'>Thursday</option>
-                                                                        <option value='Friday'>Friday</option>
-                                                                        <option value='Saturday'>Saturday</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div> : interval_time == 'Monthly' ? <div>
-                                                                <div >
-                                                                    <select class="form-control" name='day_no' onChange={e => onInputChangeInterval(e)}>
-                                                                        <option value='Day'>Day</option>
-                                                                        <option value='First'>First</option>
-                                                                        <option value='Second'>Second</option>
-                                                                        <option value='Third'>Third</option>
-                                                                        <option value='Fourth'>Fourth</option>
-                                                                        <option value='Last'>Last</option>
-                                                                        <option value='Third'>Third</option>
-                                                                    </select>
-                                                                </div>
-
-                                                                {day_no == 'Day' ? <div >
-                                                                    <select class="form-control" name='day_name' onChange={e => onInputChangeInterval(e)}>
-                                                                        {day_number.map((item, i) => <option>{item}</option>)}
-
-                                                                    </select>
-                                                                </div> : <div >
-                                                                    <select class="form-control" name='day_name' onChange={e => onInputChangeInterval(e)}>
-                                                                        <option value='Sunday'>Sunday</option>
-                                                                        <option value='Monday'>Monday</option>
-                                                                        <option value='Tuesday'>Tuesday</option>
-                                                                        <option value='Wednesday'>Wednesday</option>
-                                                                        <option value='Thursday'>Thursday</option>
-                                                                        <option value='Friday'>Friday</option>
-                                                                        <option value='Saturday'>Saturday</option>
-                                                                    </select>
-                                                                </div>}
-
-                                                                <label>  Every of <input type="number" name='every_months' pattern="[0-9]*" inputmode="numeric" onChange={e => onInputChangeInterval(e)} /> month(s)</label>
-
-                                                            </div> : <div>
-                                                                <label>Every</label>
-                                                                <select class="form-control" name='month_name' onChange={e => onInputChangeInterval(e)}>
-                                                                    {months.map((item, i) => <option>{item}</option>)}
-                                                                </select>
-                                                                <select class="form-control" name='day_name' onChange={e => onInputChangeInterval(e)}>
-                                                                    {day_number.map((item, i) => <option>{item}</option>)}
-
-                                                                </select>
-                                                            </div>}
-                                                    {/* <div class="form-group col-sm-4">
-                                                        <select class="form-control" name='day_name' onChange={e => onInputChangeInterval(e)}>
-                                                            <option value='Day'>Day</option>
-                                                            <option value='First'>First</option>
-                                                            <option value='Second'>Second</option>
-                                                            <option value='Third'>Third</option>
-                                                            <option value='Fourth'>Fourth</option>
-                                                            <option value='Last'>Last</option>
-                                                            <option value='Third'>Third</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-sm-4">
-                                                        <select class="form-control" name='day_no' onChange={e => onInputChangeInterval(e)}>
-                                                            <option>Sunday</option>
-                                                            <option>Monday</option>
-                                                            <option>Tuesday</option>
-                                                            <option>Wednesday</option>
-                                                            <option>Thursday</option>
-                                                            <option>Friday</option>
-                                                            <option>Saturday</option>
-                                                        </select>
-                                                    </div>
-
-                                                    <label>  Every of <input type="number" name='every_months' pattern="[0-9]*" inputmode="numeric" onChange={e => onInputChangeInterval(e)} /> month(s)</label> */}
-
-
+                                            <div class="float-right1">
+                                                    <p>BALANCE DUE</p>
+                                                    <h2>₹0.00</h2>
                                                 </div>
-
-                                                <div class="form-group col-sm-4">
-                                                    <label for="">Start Date</label>
-                                                    <input type="date" name="start_date" value={start_date} onChange={e => onInputChangeInterval(e)} />
-                                                </div>
-                                                <div class="form-group col-sm-4">
-                                                    <label for="">End</label>
-                                                    <select class="form-control" name='end' onChange={e => onInputChangeInterval(e)}>
-                                                        <option value={'none'}>None</option>
-                                                        <option value={'by'}>By</option>
-                                                        <option value={'after'}>After</option>
-                                                    </select> </div>
-                                            </div> : ""}
                                         </form>
                                     </div>
-
-                                </div>
-                                <div class="col-md-4 col-sm-4">
-                                    Orders
-                                    <div className="box">   
-                                    <div class="custom-right">
-                                        {/* <label>Terms</label> */}
-                                    <Select className="basic-single" options={term1}
-                                                onChange={e => onInputChangeorder(e)}
-                                                 />
-                                        {/* <button value={true} onClick={e => opneAddorderModal(e)} >add orders</button> */}
-                                    </div>                              
-                                    <div class="custom-right">
-                                        {/* <label>Orders</label> */}
-                                    <Select className="basic-single" options={addorders}
-                                                onChange={e => onInputChangeorder(e)}
-                                                 />
-                                        {/* <button value={true} onClick={e => opneAddorderModal(e)} >add orders</button> */}
-                                    </div>
-                                      
-                                    </div>                   
-                                    <div class="custom-right mr-20">
-                                        <p>BALANCE DUE</p>
-                                        <h2>₹0.00</h2>
-                                    </div>
-                                    
 
                                 </div>
                             </div>
@@ -813,48 +654,47 @@ const InvoiceAdd = () => {
                                         <div class="UserRight1">
                                             <form>
                                                 <div class="row">
-                                                    <div class="form-group col-sm-3">
-                                                        <label>Billing Address</label>
-                                                        <textarea class="form-control" disabled="disabled" value={b_street} rows="5" id="comment"></textarea>
-                                                    </div>
-                                                    <div class="form-group col-sm-3 cust-width">
-                                                        <label>Terms</label>
-                                                        {/*  */}
-                                                        <p><a href="#" data-tooltip="Terms Show How Many Days A Customer Has to Pay.You Can Change This Number Before You Send The Invoice."><i class="fa fa-question-circle-o"></i></a></p>
-                                                        <select class="form-control" name="term" onChange={e => onInputChangeDate(e)}>
-                                                                   {/* {term1 && term1.map(item => <option value={'due_on_receipt'}>{item.payment_term}</option>)} */}
-                                                            <option value={'due_on_receipt'}>Due on Receipt</option>
-                                                            <option value={'net_15'}>Net 15</option>
-                                                            <option value={'net_30'}>Net 30</option>
-                                                            <option value={'net_60'}>Net 60</option>
-                                                        </select>
-                                                    </div>
                                                     <div class="form-group col-sm-3 cust-width2">
-                                                        <label for="">Invoice Date</label>
+                                                        <label for="">Payment date</label>
                                                         <input type="date" name="startDate" value={startDate} onChange={e => onInputChange(e)} />
                                                     </div>
-                                                    <div class="form-group col-sm-3 cust-width2">
-                                                        <label for="">Due Date</label>
-                                                        <input type="date" name="endDate" value={endDate} onChange={e => onInputChange(e)} />
-                                                    </div>
-                                                    <div class="form-group col-sm-3 cust-width1">
-                                                        <label>Place of Supply </label>
-                                                        <p><a href="#" data-tooltip="You Can Send Later From The All Sales List. Filter By Delivery Method>Send Later."><i class="fa fa-question-circle-o"></i></a></p>
-                                                        {/* <RegionDropdown
-                                                            class="form-control"
-                                                            country={"India"}
-                                                            value={region}
-                                                            onChange={(val) => selectRegion(val)} /> */}
-                                                        <input type="text" name="b_state" disabled="disabled" value={b_state} onChange={e => onInputChange(e)} />
-                                                    </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-3">
+                                                        <label for="">Payment Methode</label>
+                                                        <select class="form-control taxes1" name="amounts_are" onChange={e => onInputChange(e)}>
+                                                            <option value={''}>+ add New</option>
+                                                            <option value={true}>Cash</option>
+                                                            <option value={true}>Check</option>
+                                                            <option value={false}>Credit card</option>
+                                                        </select>
+                                                        {/* <input type="text" name="endDate" value={endDate} onChange={e => onInputChange(e)} /> */}
+                                                    </div>
+                                                    <div class="form-group col-sm-3">
+                                                        <label for="">Reference no.</label>
+                                                        <input type="text" name="reference_no" value={""} onChange={e => onInputChange(e)} />
+                                                    </div>
+                                                    <div class="form-group col-sm-3">
+                                                        <label for="">Deposit to</label>
+                                                        <select class="form-control taxes1" name="amounts_are" onChange={e => onInputChange(e)}>
+                                                            <option value={''}>Inventory Asset</option>
+                                                            <option value={true}>Deferred Service Tax Input Credit</option>
+                                                            <option value={true}>Deferred CGST</option>
+                                                            <option value={false}>Deferred GST Input Credit</option>
+                                                        </select>
+                                                        {/* <input type="text" name="endDate" value={endDate} onChange={e => onInputChange(e)} /> */}
+                                                    </div>
+
+                                                </div>
+
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-sm-4">
+
                                     <div class="invoice-box">
-                                        <label>Invoice</label>
+                                        <label>Amount Recieve</label>
                                         <input type="number" name="invoice_number" value={invoice_number} class="form-control" placeholder="1001" onChange={e => onInputChange(e)} />
 
                                         {invoice_number_error &&
@@ -868,10 +708,12 @@ const InvoiceAdd = () => {
                     <section class="exclusive-tax">
                         <div class="container-fluid">
                             <div class="row">
+                                Outstanding Transactions
                                 <div class="form-group col-sm-9"></div>
                                 <div class="form-group col-sm-3 exclusive-right">
-                                    <label class="tax">Amounts are  </label>
+                                    <label class="tax">search </label>
                                     <select class="form-control taxes1" name="amounts_are" onChange={e => onInputChangeDate(e)}>
+                                        <option value={true}>search here invoice no</option>
                                         <option value={true}>Exclusive of Tax</option>
                                         <option value={true}>Inclusive of Tax</option>
                                         <option value={false}>Out of Scope of Tax</option>
@@ -892,30 +734,18 @@ const InvoiceAdd = () => {
                                             <button type="button" class='addmore'><i class="fa fa-plus-circle"></i>
                                             </button> */}
                                             <th>#</th>
-                                            <th>Service Date</th>
-                                            <th>product/service <i class="fa fa-question-circle-o"></i></th>
-                                            <th>HSN/SAC</th>
                                             <th>description</th>
-                                            {gstTaxAmount == 'true' ? <th>Tax</th> : ""}
-                                            <th>qty</th>
-                                            <th>rate</th>
-                                            <th>amount</th>
-
-                                            {/* <th>Action</th> */}
+                                            <th>due date <i class="fa fa-question-circle-o"></i></th>
+                                            <th>orignal amount</th>
+                                            <th>oper balance</th>
+                                            <th>payment</th>
                                         </tr>
                                         {tableRow && tableRow?.map((item, i) => <tr>
                                             <td><span id='snum'>{i + 1}</span></td>
-                                            <input type="date" name="service_date" placeholder={moment().format("YYYY-MM-DD")} onChange={e => onInputChange(e)} />
-                                            <td> <Select className="basic-single" options={product}
-                                                onChange={e => onInputChangeTable(e, i, "product_service")} /></td>
-                                            <td>{""}</td>
-                                            <td><input type='text' name='description' value={item.description} onChange={(e) => onInputChangeTable(e, i, "")} /></td>
-                                            {/* {console.log("hiiiiiiiiii",localStorage.getItem('state') == b_state  , localStorage.getItem('state'),b_state  )} */}
-                                            {gstTaxAmount == 'true' ? <td> <Select className="basic-single" options={localStorage.getItem('state') == b_state ? taxInfo1Gst : taxInfo1Igst}
-                                                onChange={e => onInputChangeTable(e, i, "tax")} /> </td> : ""}
-                                            <td><input type="number" name='qty' pattern="[0-9]*" inputmode="numeric" value={item.qty} onChange={(e) => onInputChangeTable(e, i, "")} /> </td>
-                                            <td><input type="number" name='rate' pattern="[0-9]*" inputmode="numeric" value={item.rate} onChange={(e) => onInputChangeTable(e, i, "")} /></td>
-                                            <td><input type="number" name='amount'  value={item.subtotal} onChange={(e) => onInputChangeTable(e, i, "")} /> </td>
+                                            <td><span id='snum'>{""}</span></td>
+                                            <td><span id='snum'>{""}</span></td>
+                                            <td><span id='snum'>{""}</span></td>
+                                            <td><span id='snum'>{""}</span></td>
                                             {/* <td>button</td> */}
                                         </tr>)}
 
@@ -931,22 +761,10 @@ const InvoiceAdd = () => {
                             <div class="row">
                                 <div class="col-md-6 col-sm-6">
                                     <div class="invoice-left">
-                                        <ul>
-                                            <li><button onClick={() => addLineHandler()}>Add Lines</button></li>
-                                            <li><button onClick={() => clearAllLine()}>Clear all lines</button></li>
-                                            {/* <li><a href="">Clear all lines</a></li> */}
-                                            <li><a href="">Add Subtotal</a></li>
-                                        </ul>
                                         <div class="form-group col-sm-12 pd-0 message-invoice">
-                                            <label>Message on invoice</label>
-                                            <textarea class="form-control" rows="4" name='invoice_message'
-                                                placeholder="This will show up on the invoice." onChange={e => onInputChange(e)}>
-                                            </textarea>
-                                        </div>
-                                        <div class="form-group col-sm-12 pd-0 message-invoice">
-                                            <label>Message on Statement</label>
-                                            <textarea class="form-control" rows="3" name='statement_message'
-                                                placeholder="If you send statements to customers, this will show up as the description for this invoice." onChange={e => onInputChange(e)}>
+                                            <label>Memo</label>
+                                            <textarea class="form-control" rows="3" name='note'
+                                                placeholder="Note.." onChange={e => onInputChange(e)}>
                                             </textarea>
                                         </div>
                                         <div class="col-sm-6 pd-0 message-invoice">
@@ -964,8 +782,8 @@ const InvoiceAdd = () => {
                                     <div class="invoice-right">
                                         <p>Subtotal<span class="amount-invoice"> ₹{subtotal.toFixed(2)}</span></p>
 
-                                        {gstTaxAmount == 'true' ?<div>   {
-                                               
+                                        {gstTaxAmount == 'true' ? <div>   {
+
                                             tableRow.map((item) => <div>
                                                 {item.tax_type == 'Gst' ? <div>
                                                     <p>CGST {(item.tax / 2)} % on {item.subtotal}<span class="amount-invoice1"> ₹{((total - subtotal) / 2).toFixed(2)}</span></p>
@@ -977,11 +795,11 @@ const InvoiceAdd = () => {
 
                                             )
                                         }
-                                        <p>Total<span class="amount-invoice1"> ₹{total.toFixed(2)}</span></p>
-                                        <p>Balance Due<span> ₹{total.toFixed(2)}</span></p>
+                                            <p>Total<span class="amount-invoice1"> ₹{total.toFixed(2)}</span></p>
+                                            <p>Balance Due<span> ₹{total.toFixed(2)}</span></p>
                                         </div> : <div><p>Total<span class="amount-invoice1"> ₹{subtotal}</span></p>
-                                        <p>Balance Due<span> ₹{subtotal}</span></p></div>}
-                                     
+                                            <p>Balance Due<span> ₹{subtotal}</span></p></div>}
+
                                     </div>
                                 </div>
                             </div>
@@ -1002,10 +820,6 @@ const InvoiceAdd = () => {
                                     <div class="footer-center">
                                         <ul>
                                             <li><a href="#">Print or Preview</a></li>
-                                            |
-                                            <li><a name='invoice_type' onClick={e => onInputChange(e)}>Make recurring</a></li>
-                                            |
-                                            <li><a href="#">Customise</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -1021,75 +835,6 @@ const InvoiceAdd = () => {
                         </div>
                     </section>
 
-                    <Modal show={addOrders} >
-                        <Modal.Header closeButton >
-                            <Modal.Title>{"cityData.name"}</Modal.Title>
-                        </Modal.Header>
-                        <div class="modal-header login-header">
-                            <h4 class="modal-title">Add Order Information</h4>
-                            <button type="button" class="close" data-dismiss="modal" name='newCustomer' value={false} onClick={opneAddorderModal}>×</button>
-
-                        </div>
-                        <div class="row mt-60">
-                            <div class="col-md-12 col-sm-12">
-                                <div class="modal-body">
-                                    <Form>
-                                        <Row className="mb-3">
-                                            <Form.Group as={Col} controlId="formGridEmail">
-                                                <Form.Label>Order No *</Form.Label>
-                                                {/* <input type="text" placeholder="Order No"></input> */}
-                                                <Form.Control type ='number'pattern="[0-9]*" inputmode="numeric" name="order_no" placeholder="Order No" value={order_no} onChange = {e=>onInputchangeOrder(e)} />
-                                            </Form.Group>
-
-                                            <Form.Group as={Col} controlId="formGridPassword">
-                                                <Form.Label>Client PO Number (if any)</Form.Label>
-                                                {/* <input  type="text" placeholder="Client PO Number" ></input> */}
-                                                <Form.Control type ='number'pattern="[0-9]*" inputmode="numeric" placeholder="Client PO Number" name="client_po_no" onChange = {e=>onInputchangeOrder(e)}/>
-                                            </Form.Group>
-                                        </Row>
-                                        <Form.Group className="mb-3" controlId="formGridAddress2">
-                                            <Form.Label> Descritpion</Form.Label>
-                                            {/* <input  type="text" placeholder="Client PO Number" ></input> */}
-                                            <Form.Control placeholder="Descritpion" name="description" onChange = {e=>onInputchangeOrder(e)} />
-                                        </Form.Group>
-
-                                        <Form.Group>
-                                        <div class="form-group col-sm-3 cust-width2">
-                                                        <label for="">Start Date</label>
-                                                        <input type="date" name="order_startdate" value={order_startdate} onChange={e => onInputchangeOrder(e)} />
-                                                    </div>
-                                                    <div class="form-group col-sm-3 cust-width2">
-                                                        <label for="">End Date</label>
-                                                        <input type="date" name="order_enddate" value={order_enddate} onChange={e => onInputchangeOrder(e)} />
-                                                    </div>
-                                                    </Form.Group>
-                                        <Form.Group className="mb-3" controlId="formGridAddress1">
-                                            <Form.Label>Total order value with gst</Form.Label>
-                                            {/* <input  type="text" placeholder="Client PO Number" ></input> */}
-                                            <Form.Control type ='number' pattern="[0-9]*" inputmode="numeric" placeholder="Total order value with gst" name="t_order_value" onChange = {e=>onInputchangeOrder(e)}  />
-                                        </Form.Group>
-
-                                        <Form.Group className="mb-3" controlId="formGridAddress2">
-                                            <Form.Label>Payment Terms</Form.Label>
-                                            {paymentTerm && paymentTerm.map((item, i) => <div id="formGridCheckbox" class="mb-3 form-group">
-                                                <div class="form-check">
-                                                    <input type="text" class="form-check-input" name = "payment_term" placeholder="Add Term" onChange = {e=>onInputchangeOrder(e, i)} />
-                                                </div>
-                                            </div>)}
-                                        </Form.Group>
-                                        <button variant="primary" onClick={(e) => addTermHandler(e)} >Add Term</button>
-                                        <button variant="secondary" onClick={(e) => clearTermAllLine(e)}>clear Term</button>
-                                    </Form> </div>
-                            </div>
-                        </div>
-                        <div class='footer-side'>
-                            <Modal.Footer>
-                                <Button variant="secondary" name='newCustomer'  value={false}  onClick={opneAddorderModal}> Close </Button>
-                                <Button variant="primary" onClick={e => orderSubmit(e)}> Submit</Button>
-                            </Modal.Footer>
-                        </div>
-
-                    </Modal>
                     {/* <!-- Bootstrap and necessary plugins --> */}
                     <script src="js/jquery.min.js" type="text/javascript"></script>
                     <script src="js/popper.min.js" type="text/javascript"></script>
@@ -1104,4 +849,4 @@ const InvoiceAdd = () => {
     );
 };
 
-export default InvoiceAdd;
+export default InvoiceRecieve;

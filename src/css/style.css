@@ -10497,9 +10497,71 @@ cust-left{
   margin-left: 10px;
   margin-bottom: 10px;
 }
-.custom-right {
+.box {
+  border: 1px solid #ddd;
+  padding: 0;
+  height: 62px;
+  border-radius: 4px;
+}
+.css-yk16xz-control {
+  margin-top: 10px;
+}
+.css-2b097c-container {
+  position: relative;
+  box-sizing: border-box;
+  width: 150px;
+  /* height: 32px; */
+  /* padding: 0; */
+}
+.custom-right.mr-20 {
+  /* margin-left: 15px; */
+  margin-top: 10px;
+  float: right;
+}
+
+
+.css-2b097c-container {
+    position: relative;
+    box-sizing: border-box;
+    width: 130px;
     float: right;
-    margin-right: 40px;
+    margin-right: 24px;
+    /* height: 32px; */
+    /* padding: 0; */
+}
+.css-yk16xz-control {
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: hsl(0, 0%, 100%);
+    border-color: hsl(0, 0%, 80%);
+    border-radius: 4px;
+    border-style: solid;
+    border-width: 1px;
+    cursor: default;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+    min-height: 38px;
+    outline: 0!important;
+    position: relative;
+    -webkit-transition: all 100ms;
+    transition: all 100ms;
+    box-sizing: border-box;
+    height: 20px;
+}
+.custom-right {
+    /* float: right; */
+    /* margin-right: 40px; */
 }
 .cust-left .center {
   position: absolute;
@@ -10511,6 +10573,10 @@ cust-left{
 .cust-left select {
 /*  z-index: 3;*/
   float: left;
+}
+.float-right1{
+  float: right;
+  margin-right: -298px;
 }
 
 /** Custom Select **/

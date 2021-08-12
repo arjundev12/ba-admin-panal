@@ -207,6 +207,10 @@ const CustomerList = () => {
     const onInputChange = async (e) => {
         console.log("formData", formData)
         console.log("targat", e.target.name, e.target.value)
+        if(e.target.name=='redirect'){
+            history.push(e.target.value);
+            // <Link to = {e.target.value}></Link>
+        }
         if(e.target.name=='email'){
             handleFormValidation()
             setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -507,13 +511,13 @@ const CustomerList = () => {
                                                     <td>{item.gstin}</td>
                                                     <td>{item.number}</td>
                                                     <td>{item.payment_and_billing.oppning_balance}</td> */}
-                                                    <td><Link to = {`/add/invoice/${item._id}`}>CREATE INVOICE</Link></td>
-                                                    {/* <td>
-                                <select class="form-control" name="minner_Activity" value={item.minner_Activity}
+                                                    {/* <td><Link to = {`/add/invoice/${item._id}`}>CREATE INVOICE</Link></td> */}
+                                                    <td>
+                                <select class="form-control" name="redirect" 
                                     onChange={e => onInputChange(e, item)}>
-                                    <option value= {true} >Active</option>
-                                    <option value={false}>Inactive</option>
-                                </select></td> */}
+                                    <option value= {`/add/invoice/${item._id}`} >create invoice</option>
+                                    <option value={`/recieve/invoice/${item._id}`}>recieve Invoice</option>
+                                </select></td>
                                                     {/* <td><Link className="btn btn-primary mr-2 " to={`/user/${item._id}`}>view </Link>
                                 <Link className="btn btn-primary mr-2" to={`/user/edit/${item._id}`}> edit </Link>
                                 </td> */}
