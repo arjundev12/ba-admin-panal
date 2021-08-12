@@ -515,6 +515,7 @@ const CustomerList = () => {
                                                     <td>
                                 <select class="form-control" name="redirect" 
                                     onChange={e => onInputChange(e, item)}>
+                                            <option value= {""} ></option>
                                     <option value= {`/add/invoice/${item._id}`} >create invoice</option>
                                     <option value={`/recieve/invoice/${item._id}`}>recieve Invoice</option>
                                 </select></td>
