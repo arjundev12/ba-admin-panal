@@ -208,8 +208,9 @@ const CustomerList = () => {
         console.log("formData", formData)
         console.log("targat", e.target.name, e.target.value)
         if(e.target.name=='redirect'){
-            history.push(e.target.value);
-            // <Link to = {e.target.value}></Link>
+            if (e.detail === 0){
+                history.push(e.target.value);
+            }
         }
         if(e.target.name=='email'){
             handleFormValidation()
@@ -514,8 +515,8 @@ const CustomerList = () => {
                                                     {/* <td><Link to = {`/add/invoice/${item._id}`}>CREATE INVOICE</Link></td> */}
                                                     <td>
                                 <select class="form-control" name="redirect" 
-                                    onChange={e => onInputChange(e, item)}>
-                                            <option value= {""} ></option>
+                                    onClick={e => onInputChange(e, item)}>
+                                            {/* <option value= {""} ></option> */}
                                     <option value= {`/add/invoice/${item._id}`} >create invoice</option>
                                     <option value={`/recieve/invoice/${item._id}`}>recieve Invoice</option>
                                 </select></td>
